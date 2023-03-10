@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 
 /// Displays a list of Items.
 class ItemListView extends StatelessWidget {
-  const ItemListView({super.key, required this.items,});
+  ItemListView({super.key, required this.items});
 
   static const routeName = '/';
 
-  final List<Item> items;
+  List<Item> items;
 
   @override
   Widget build(BuildContext context) {
+    if (items.isEmpty) {
+      items.add(Item("No entries, add some!"));
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog Items'),
@@ -61,6 +64,11 @@ class ItemListView extends StatelessWidget {
             }
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () { print("TODO write add"); },
+          child:  const Icon(Icons.add)
+
       ),
     );
   }
