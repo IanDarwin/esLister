@@ -1,15 +1,11 @@
+import 'package:catalog/model/item.dart';
+import 'package:catalog/settings/settings_view.dart';
+import 'package:catalog/ui/item_page.dart';
 import 'package:flutter/material.dart';
-
-import '../settings/settings_view.dart';
-import 'item.dart';
-import 'item_details_view.dart';
 
 /// Displays a list of Items.
 class ItemListView extends StatelessWidget {
-  const ItemListView({
-    super.key,
-    this.items = const [Item(1), Item(2), Item(3)],
-  });
+  const ItemListView({super.key, required this.items,});
 
   static const routeName = '/';
 
@@ -49,7 +45,7 @@ class ItemListView extends StatelessWidget {
           final item = items[index];
 
           return ListTile(
-            title: Text('Item ${item.id}'),
+            title: Text('Item ${item.name}'),
             leading: const CircleAvatar(
               // Display the Flutter Logo image asset.
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
@@ -60,7 +56,7 @@ class ItemListView extends StatelessWidget {
               // background, the navigation stack is restored.
               Navigator.restorablePushNamed(
                 context,
-                ItemDetailsView.routeName,
+                ItemPage.routeName,
               );
             }
           );

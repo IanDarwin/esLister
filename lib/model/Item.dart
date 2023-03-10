@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
+
+const emptyString = "";
+const zero = 0.0;
 
 class Item {
   String name;
-  List<Image>? photos;
+  List<String>? images;
   String? description;
   String? location;
   double? value;
 
-  Item(this.name);
+  Item(this.name, {images, description, location, value});
 }

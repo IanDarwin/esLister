@@ -1,8 +1,9 @@
+import 'package:catalog/ui/item_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'ui/item_details.dart';
+import 'model/Item.dart';
 import 'ui/item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           // allows descendant Widgets to display the correct translations
           // depending on the user's locale.
           localizationsDelegates: const [
-            AppLocalizations.delegate,
+            // AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
@@ -50,8 +51,9 @@ class MyApp extends StatelessWidget {
           //
           // The appTitle is defined in .arb files found in the localization
           // directory.
-          onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context)!.appTitle,
+          // onGenerateTitle: (BuildContext context) =>
+          //     AppLocalizations.of(context)!.appTitle,
+          title: "Fixme I18N",
 
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
@@ -69,11 +71,11 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case ItemDetailsView.routeName:
-                    return const ItemDetailsView();
+                  case ItemPage.routeName:
+                    return ItemPage(item: Item("Fred"));
                   case ItemListView.routeName:
                   default:
-                    return const ItemListView();
+                    return ItemPage(item: Item("New Item"));
                 }
               },
             );
