@@ -1,5 +1,11 @@
-= catalog
+= Catalog
 
 Take pictures of things and catalog them.
 Allows multiple pix per item, a brief description,
 and an estimated valuation.
+
+Useful for estate sales, downsizing, etc.
+
+== Status
+
+Very much a WIP for now.
