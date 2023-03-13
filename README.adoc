@@ -1,4 +1,4 @@
-= Catalog
+= esCatalog
 
 Take pictures of things and catalog them.
 Allows multiple pix per item, a brief description,
