@@ -30,3 +30,27 @@ appear in the new "First" catalog, which you can rename.
 There shall be an open-ended list of uploaders, e.g., 
 eBay, Kijiji, proprietary estate companies, etc.
 Initially only one need be provided, probably eBay.
+
+== Screens
+
+Main page - list of items in default (or last used) estate (need better term).
+FAB is "+" to add new item.
+
+Details page - for adding/editing items.
+	Entry field for each Item member
+	Photo button to take pictures
+
+Settings page:
+	Single/Multiple Estates
+	Scrolling list of Estates if > 1
+		Long-press to rename, delete
+	Parameters (Id, Pass, URL?) for each Uploader installed.
+
+Sliding NavBar Items
+	Help
+	More...
+
+Upload page
+	Select destination
+	Select All or Single item
+	Go button
