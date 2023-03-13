@@ -1,16 +1,16 @@
-= esCatalog
+= esLister
 
 Take pictures of things and catalog them.
 Allows multiple pix per item, a brief description,
 and an estimated valuation.
 
 Useful for estate sales, downsizing, etc.
-Hence the name: escatalog can mean:
+Hence the name: esLister can mean:
 
-* Estate Sale Catalog
-* Extra Stuff Catalog
-* ex's stuff Catalog
+* Estate Sale Lister
+* Extra Stuff Lister
+* ex's stuff Lister
 
 == Status
 
-Very much a WIP for now.
+Just a sketch/WIP for now.
