@@ -8,7 +8,7 @@ garage.
 
 = Data
 
-Should allow entry of the data itmes:
+Should allow entry of the data items:
 
 . Item name
 . Location
