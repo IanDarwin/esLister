@@ -1,0 +1,32 @@
+= esLister: Design Notes
+
+An app to allow you to catalog a bunch of "extra stuff" or prepare for an "estate sale".
+Intended to be useful both for professional appraisers and for individuals wishing to catalog 
+a bunch of "stuff" for sale - antique furniture, paintings, jewelry, for a
+well-to-do person's estate, or those extra ugly chairs that you keep in the
+garage.
+
+= Data
+
+Should allow entry of the data itmes:
+
+# Item name
+# Location
+# Notes
+# Take pictures (typically 2-3 but no hard limit!)
+# Initial assessment value
+
+What should be mandatory? I suppose just the first two items.
+
+Initial setup to include a "One Sale or Multiple" choice; "Multiple"
+will give a chooser for different estate sales you are working on,
+or different partners' stuff that's being sold, etc.
+"One" will remove thd dropdown.
+If you change your mind from one to many, all the current items
+appear in the new "First" catalog, which you can rename.
+
+== Upload
+
+There shall be an open-ended list of uploaders, e.g., 
+eBay, Kijiji, proprietary estate companies, etc.
+Initially only one need be provided, probably eBay.
