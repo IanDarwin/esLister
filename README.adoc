@@ -5,6 +5,11 @@ Allows multiple pix per item, a brief description,
 and an estimated valuation.
 
 Useful for estate sales, downsizing, etc.
+Hence the name: escatalog can mean:
+
+* Estate Sale Catalog
+* Extra Stuff Catalog
+* ex's stuff Catalog
 
 == Status
 
