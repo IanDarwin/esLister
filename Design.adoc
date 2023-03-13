@@ -10,11 +10,11 @@ garage.
 
 Should allow entry of the data itmes:
 
-# Item name
-# Location
-# Notes
-# Take pictures (typically 2-3 but no hard limit!)
-# Initial assessment value
+. Item name
+. Location
+. Notes
+. Take pictures (typically 2-3 but no hard limit!)
+. Initial assessment value
 
 What should be mandatory? I suppose just the first two items.
 
