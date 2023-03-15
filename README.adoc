@@ -11,7 +11,7 @@ Hence the name: esLister can mean:
 * Extra Stuff Lister
 * ex's stuff Lister
 
-== N.B.
+== N.B. Re Checkout
 
 The program name is "esLister", but Flutter requires a lower-case directory name.
 Github doesn't care, so please, when cloning this repo, call it "eslister" not "esLister".
