@@ -1,6 +1,6 @@
 
 const emptyString = "";
-const zero = 0.0;
+
 
 class Item {
   String name;

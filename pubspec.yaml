@@ -3,7 +3,6 @@ description: Take pictures of things and eslister them.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-
 version: 1.0.0+1
 
 environment:
@@ -29,10 +28,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - img/
+    - assets/img/
 
 flutter_icons:
   android: true
   ios: true
   remove_alpha_ios: true
-  image_path: "img/logo.png"
+  image_path: "assets/img/logo.png"
