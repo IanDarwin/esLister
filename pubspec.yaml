@@ -33,6 +33,6 @@ flutter:
 
 flutter_icons:
   android: true
-  # ios: true
+  ios: true
   remove_alpha_ios: true
   image_path: "img/logo.png"
