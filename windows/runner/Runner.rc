@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.darwinsys" "\0"
-            VALUE "FileDescription", "catalog" "\0"
+            VALUE "FileDescription", "eslister" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "catalog" "\0"
+            VALUE "InternalName", "eslister" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.darwinsys. All rights reserved." "\0"
-            VALUE "OriginalFilename", "catalog.exe" "\0"
-            VALUE "ProductName", "catalog" "\0"
+            VALUE "OriginalFilename", "eslister.exe" "\0"
+            VALUE "ProductName", "eslister" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

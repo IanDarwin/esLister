@@ -1,6 +1,6 @@
-import 'package:catalog/model/item.dart';
-import 'package:catalog/settings/settings_view.dart';
-import 'package:catalog/ui/item_page.dart';
+import 'package:eslister/model/item.dart';
+import 'package:eslister/settings/settings_view.dart';
+import 'package:eslister/ui/item_page.dart';
 import 'package:flutter/material.dart';
 
 /// Displays a list of Items.

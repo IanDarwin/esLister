@@ -1,5 +1,5 @@
-name: catalog
-description: Take pictures of things and catalog them.
+name: eslister
+description: Take pictures of things and eslister them.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -33,6 +33,6 @@ flutter:
 
 flutter_icons:
   android: true
-  ios: true
+  # ios: true
   remove_alpha_ios: true
   image_path: "img/logo.png"

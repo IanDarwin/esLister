@@ -1,5 +1,9 @@
+all:
+	@echo "So, whatcha wanna DO, boss?"
+
 push:
-	git push origin master; git push backup master
+	git push origin main # git push backup main
+
 release release-packages appbundles:
 	@echo "************************************************"
 	@echo "**     Building releases for Android, iOS     **"
@@ -19,6 +23,6 @@ release release-packages appbundles:
 #regen-db:
 #	flutter packages pub run build_runner build --delete-conflicting-outputs
 regen-icons:
-	flutter pub run flutter_launcher_icons:main
+	flutter pub run flutter_launcher_icons
 
 

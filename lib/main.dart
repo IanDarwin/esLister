@@ -1,9 +1,9 @@
-import 'package:catalog/ui/item_page.dart';
+import 'package:eslister/ui/item_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:catalog/model/item.dart';
-import 'package:catalog/ui/item_list_view.dart';
+import 'package:eslister/model/item.dart';
+import 'package:eslister/ui/item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 import 'settings/settings_service.dart';

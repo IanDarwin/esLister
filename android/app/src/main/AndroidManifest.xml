@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.darwinsys.catalog">
+    package="com.darwinsys.eslister">
    <application
-        android:label="catalog"
+        android:label="esLister"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

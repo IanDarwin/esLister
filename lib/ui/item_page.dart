@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-import 'package:catalog/model/item.dart';
+import 'package:eslister/model/item.dart';
 import 'package:image_picker/image_picker.dart';
 
 /// Displays/Edits detailed information about one Item.
