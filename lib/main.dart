@@ -4,11 +4,19 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:eslister/model/item.dart';
 import 'package:eslister/ui/item_list_view.dart';
+import 'data/local_db_provider.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 import 'settings/settings_service.dart';
 
+late LocalDbProvider localDbProvider;
+
 void main() async {
+  // Set up local database
+  WidgetsFlutterBinding.ensureInitialized();
+  localDbProvider = LocalDbProvider();
+  await localDbProvider.open('bookmarks.db');
+
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsController(SettingsService());
