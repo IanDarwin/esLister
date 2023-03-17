@@ -1,8 +1,7 @@
 
-const emptyString = "";
-
-
+/// Describe one item in the location being assessed
 class Item {
+  int? id;
   String name;
   List<String>? images = [];
   String? description;
@@ -19,5 +18,14 @@ class Item {
       "location": location,
       "value": value,
     };
+  }
+
+  static Item fromMap(Map map) {
+        return Item(
+          map['name'],
+          location: map["location"],
+          description: map['description'],
+          value: map['value'],
+        );
   }
 }
