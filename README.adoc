@@ -19,3 +19,8 @@ Github doesn't care, so please, when cloning this repo, call it "eslister" not "
 == Status
 
 Just a sketch/WIP for now.
+
+== Logo
+
+The tawdry logo is from a sketch I did for an earlier (and now dead) program called jrLister,
+which was a desktop app with similar scope. If you don't like the logo, make me a better one :-)
