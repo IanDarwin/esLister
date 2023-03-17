@@ -66,7 +66,10 @@ class ItemListView extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () { print("TODO write add"); },
+          onPressed: () { Navigator.restorablePushNamed<Item>(
+            context,
+            ItemPage.routeName,
+          ); },
           child:  const Icon(Icons.add)
 
       ),

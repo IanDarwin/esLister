@@ -1,6 +1,7 @@
 {
-  "appTitle": "eslister2",
+  "appTitle": "esLister",
   "@appTitle": {
-    "description": "The title of the application"
-  }
+    "description": "e s Lister"
+  },
+  "save" : "Save"
 }

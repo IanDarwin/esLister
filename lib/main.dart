@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case ItemPage.routeName:
-                    return ItemPage(item: Item("Fred"));
+                    return ItemPage(item: Item(""));
                   case ItemListView.routeName:
                   default:
                     return ItemListView(items: itemList);
