@@ -59,6 +59,10 @@ class ItemPageState extends State<ItemPage> {
     }
   }
 
+  void _takePicture() async {
+    print("ADD CODE TO TAKE PICTURE");
+  }
+
   void _deleteImage(int index) {
     setState(() {
       _images.removeAt(index);
@@ -163,19 +167,37 @@ class ItemPageState extends State<ItemPage> {
                                 if (index == _images.length) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        _addImage();
-                                      },
-                                      child: Container(
-                                        width: 100.0,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.grey),
-                                          borderRadius: BorderRadius.circular(4.0),
+                                    child: Column(
+                                      children: [
+                                        const Text("Add Image"),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            _takePicture();
+                                          },
+                                          child: Container(
+                                            width: 100.0,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.grey),
+                                              borderRadius: BorderRadius.circular(4.0),
+                                            ),
+                                            child: const Icon(Icons.camera),
+                                          ),
                                         ),
-                                        child: const Icon(Icons.add),
-                                      ),
-                                    ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            _addImage();
+                                          },
+                                          child: Container(
+                                            width: 100.0,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.grey),
+                                              borderRadius: BorderRadius.circular(4.0),
+                                            ),
+                                            child: const Icon(Icons.image_search),
+                                          ),
+                                        ),
+                                    ],
+                                    )
                                   );
                                 }
                                 return Padding(
