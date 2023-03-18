@@ -3,12 +3,12 @@
 class Item {
   int? id;
   String name;
-  List<String>? images = [];
+  List<String> images = [];
   String? description;
   String? location;
   double? value;
 
-  Item(this.name, {images, description, location, value});
+  Item(this.name, this.images, {this.description, this.location, this.value});
 
   Map<String,dynamic> toMap() {
     return {
@@ -23,6 +23,7 @@ class Item {
   static Item fromMap(Map map) {
         return Item(
           map['name'],
+          map['images'],
           location: map["location"],
           description: map['description'],
           value: map['value'],

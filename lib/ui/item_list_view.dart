@@ -13,9 +13,6 @@ class ItemListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) {
-      items.add(Item("No entries, add some!"));
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog Items'),
@@ -38,7 +35,10 @@ class ItemListView extends StatelessWidget {
       // In contrast to the default ListView constructor, which requires
       // building all Widgets up front, the ListView.builder constructor lazily
       // builds Widgets as they’re scrolled into view.
-      body: ListView.builder(
+      body:
+        items.isEmpty ?
+          const Center(child: Text("No items, use + to enter some")) :
+        ListView.builder(
         // Providing a restorationId allows the ListView to restore the
         // scroll position when a user leaves and returns to the app after it
         // has been killed while running in the background.
@@ -69,7 +69,8 @@ class ItemListView extends StatelessWidget {
           onPressed: () { Navigator.restorablePushNamed<Item>(
             context,
             ItemPage.routeName,
-          ); },
+          );
+          },
           child:  const Icon(Icons.add)
 
       ),

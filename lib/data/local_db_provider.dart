@@ -39,14 +39,14 @@ create table $itemTableName (
   $columnName text not null,
   $columnDescr text not null,
   $columnLocation text not null,
-  $columnValue double,
+  $columnValue double
   )
 ''');
     // Insert starter bookmark records
     for (Item item in _demoList) {
       await database.execute('''
         insert into $itemTableName($columnName,$columnDescr,$columnLocation,$columnValue)
-        values('${item.name}', '${item.description}', '${item.location}', '${item.value});
+        values('${item.name}', '${item.description}', '${item.location}', ${item.value});
         ''');
     }
   }
@@ -57,9 +57,9 @@ create table $itemTableName (
 
   // Initial starter list of Bookmark
   final List<Item> _demoList = [
-    Item('Candlestick', location: 'Living room', description:"A single silver candlestick (heavy)", value: 1.50),
-    Item('Rope', location: 'Parlor', description:"A 10-foot long sisal rope", value: 0.25),
-    Item('Knife', location: 'Kitchen', description:"A long and very sharp knife"),
+    Item('Candlestick', [], location: 'Living room', description:"A single silver candlestick (heavy)", value: 1.50),
+    Item('Rope', [], location: 'Parlor', description:"A 10-foot long sisal rope", value: 0.25),
+    Item('Knife', [], location: 'Kitchen', description:"A long and very sharp knife"),
   ];
 
   // Sample locations
@@ -104,7 +104,7 @@ create table $itemTableName (
         result.add(Item.fromMap(m));
       }
     } else {
-      result.add(Item("None", description: "No Items found - add some!"));
+      // Do no harm!
     }
     return result;
   }
