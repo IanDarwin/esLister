@@ -21,7 +21,14 @@ class ItemPageState extends State<ItemPage> {
   String? _description;
   String? _location;
   double? _value;
-  final Set<String> locations = {};
+  static final Set<String> locations = {
+    "Bedroom-Main",
+    "Bedroom-2",
+    "Kitchen",
+    "Living Room",
+    "Office-1",
+    "Office-2",
+  };
 
   @override
   void initState() {
@@ -83,6 +90,7 @@ class ItemPageState extends State<ItemPage> {
                     children: [
                       TextFormField(
                         initialValue: _name,
+                        keyboardType: TextInputType.name,
                         decoration: InputDecoration(labelText: 'Name'),
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -96,50 +104,49 @@ class ItemPageState extends State<ItemPage> {
                       ),
                       TextFormField(
                         initialValue: _description,
+                        keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: 'Description'),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter a description';
-                          }
-                          return null;
-                        },
                         onSaved: (value) {
                           _description = value;
                         },
                       ),
-                      Autocomplete(
+                      Autocomplete<String>(
                         optionsBuilder: (TextEditingValue textEditingValue) {
-                          print("OptionsBuilder!");
-                          return locations
-                              .where((String loc) => loc.toLowerCase()
+                          var ret = locations
+                              .where((String locn) => locn.toLowerCase()
                               .startsWith(textEditingValue.text.toLowerCase())
-                          )
-                              .toList();
+                          );
+                          return ret;
                         },
                         fieldViewBuilder: (context, editingController, focusNode, onFieldSubmitted) {
-                          print("fieldViewBuilder!");
+                          if (_location != null && _location!.isNotEmpty) {
+                            editingController.text = _location!;
+                          }
                           return TextFormField(
-                            initialValue: _location,
+                            controller: editingController,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(labelText: 'Location'),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter a location';
-                              }
-                              return null;
+                            focusNode: focusNode,
+                            onFieldSubmitted: (loc) {
+                              onFieldSubmitted();
+                              _location = loc;
                             },
-                            onSaved: (value) {
-                              _location = value;
+                            onSaved: (loc) {
+                              _location = loc;
+                              locations.add(loc!);
                             },
                           );
                         },
                         onSelected: (String loc) {
+                          print("onSelected($loc)");
+                          _location = loc;
                           locations.add(loc);
                         },
                       ),
                       TextFormField(
                         initialValue: _value != null ? _value.toString() : '',
                         decoration: InputDecoration(labelText: 'Value'),
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return null;      // field is optional
@@ -164,7 +171,7 @@ class ItemPageState extends State<ItemPage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: 1 + (_images.length),
                               itemBuilder: (context, index) {
-                                if (index == _images.length) {
+                                if (index == _images.length) { // e.g., last one
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Column(
