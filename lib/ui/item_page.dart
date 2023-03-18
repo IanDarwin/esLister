@@ -17,10 +17,11 @@ class ItemPage extends StatefulWidget {
 class ItemPageState extends State<ItemPage> {
   final _formKey = GlobalKey<FormState>();
   String? _name;
-  List<String>? _images = [];
+  late List<String> _images ;
   String? _description;
   String? _location;
   double? _value;
+  final Set<String> locations = {};
 
   @override
   void initState() {
@@ -40,26 +41,27 @@ class ItemPageState extends State<ItemPage> {
     _formKey.currentState!.save();
     Item newItem = Item(
       _name!,
-      images: _images,
+      _images,
       description: _description,
       location: _location,
       value: _value,
     );
+    newItem.images = _images!;
     Navigator.of(context).pop(newItem);
   }
 
   void _addImage() async {
-    final image = await ImagePicker().getImage(source: ImageSource.gallery);
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
-        _images!.add(image.path);
+        _images.add(image.path);
       });
     }
   }
 
   void _deleteImage(int index) {
     setState(() {
-      _images!.removeAt(index);
+      _images.removeAt(index);
     });
   }
 
@@ -67,7 +69,7 @@ class ItemPageState extends State<ItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.item == null ? 'Add Item' : 'Edit Item'),
+          title: Text(widget.item.name.isEmpty ? 'Add Item' : 'Edit Item'),
         ),
         body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -101,17 +103,33 @@ class ItemPageState extends State<ItemPage> {
                           _description = value;
                         },
                       ),
-                      TextFormField(
-                        initialValue: _location,
-                        decoration: InputDecoration(labelText: 'Location'),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter a location';
-                          }
-                          return null;
+                      Autocomplete(
+                        optionsBuilder: (TextEditingValue textEditingValue) {
+                          print("OptionsBuilder!");
+                          return locations
+                              .where((String loc) => loc.toLowerCase()
+                              .startsWith(textEditingValue.text.toLowerCase())
+                          )
+                              .toList();
                         },
-                        onSaved: (value) {
-                          _location = value;
+                        fieldViewBuilder: (context, editingController, focusNode, onFieldSubmitted) {
+                          print("fieldViewBuilder!");
+                          return TextFormField(
+                            initialValue: _location,
+                            decoration: InputDecoration(labelText: 'Location'),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a location';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _location = value;
+                            },
+                          );
+                        },
+                        onSelected: (String loc) {
+                          locations.add(loc);
                         },
                       ),
                       TextFormField(
@@ -120,7 +138,7 @@ class ItemPageState extends State<ItemPage> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Please enter a value';
+                            return null;      // field is optional
                           }
                           if (double.tryParse(value) == null) {
                             return 'Please enter a valid number';
@@ -128,19 +146,21 @@ class ItemPageState extends State<ItemPage> {
                           return null;
                         },
                         onSaved: (value) {
-                          _value = double.parse(value!);
+                          _value = (value == null || value.isEmpty) ?
+                          0 :
+                          double.parse(value);
                         },
                       ),
                       const SizedBox(height: 16.0),
                       const Text('Images'),
                       const SizedBox(height: 8.0),
-                      Container(
+                      SizedBox(
                           height: 100.0,
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: _images!.length + 1,
+                              itemCount: 1 + (_images.length),
                               itemBuilder: (context, index) {
-                                if (index == _images!.length) {
+                                if (index == _images.length) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: GestureDetector(
@@ -153,7 +173,7 @@ class ItemPageState extends State<ItemPage> {
                                           border: Border.all(color: Colors.grey),
                                           borderRadius: BorderRadius.circular(4.0),
                                         ),
-                                        child: Icon(Icons.add),
+                                        child: const Icon(Icons.add),
                                       ),
                                     ),
                                   );
@@ -169,49 +189,26 @@ class ItemPageState extends State<ItemPage> {
                                               borderRadius: BorderRadius.circular(4.0),
                                             ),
                                             child: Image.file(
-                                              File(_images![index]),
+                                              File(_images[index]),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
-                                          Expanded(
-                                            child: GridView.builder(
-                                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                                itemCount: _images?.length,
-                                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 3,
-                                                  crossAxisSpacing: 8.0,
-                                                  mainAxisSpacing: 8.0,
+                                          Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: GestureDetector(
+                                              onTap: () => _deleteImage(index),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(50.0),
                                                 ),
-                                                itemBuilder: (context, index) {
-                                                  return Stack(
-                                                    children: [
-                                                      Container(
-                                                        decoration: BoxDecoration(
-                                                          border: Border.all(color: Colors.grey),
-                                                          borderRadius: BorderRadius.circular(4.0),
-                                                        ),
-                                                        child: Image.file(File(_images![index]), fit: BoxFit.cover),
-                                                      ),
-                                                      Positioned(
-                                                        top: 0,
-                                                        right: 0,
-                                                        child: GestureDetector(
-                                                          onTap: () => _deleteImage(index),
-                                                          child: Container(
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.white,
-                                                              borderRadius: BorderRadius.circular(50.0),
-                                                            ),
-                                                            child: Icon(Icons.close, size: 16.0, color: Colors.grey),
-                                                          ),
-                                                        ),
-                                                      ),
-
-                                                    ],
-                                                  );
-                                                }
+                                                child: const Icon(Icons.close,
+                                                    size: 16.0, color: Colors.grey),
+                                              ),
                                             ),
                                           ),
+
                                         ]
                                     )
                                 );
@@ -219,7 +216,7 @@ class ItemPageState extends State<ItemPage> {
                           )
                       ),
                       ElevatedButton(
-                        onPressed: () { print("Would save now"); },
+                        onPressed: () => _saveForm(),
                         child: Text("Save"),
                       ),
                     ]
