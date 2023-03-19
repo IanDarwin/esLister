@@ -1,4 +1,4 @@
-// Data Access for Bookmarks Data
+/// Data Access for entity Data
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -31,18 +31,18 @@ class LocalDbProvider {
   }
 
   Future<void> _onCreate(Database database, int version) async {
-    debugPrint("In onCreate; base = $database");
+    debugPrint("In LocalDbProvider::onCreate; database = $database");
     await database.execute('''
 create table $itemTableName ( 
   $columnId integer primary key autoincrement,
   $columnRemoteId text,
   $columnName text not null,
-  $columnDescr text not null,
-  $columnLocation text not null,
+  $columnDescr text,
+  $columnLocation text,
   $columnValue double
   )
 ''');
-    // Insert starter bookmark records
+    // Insert starter records
     for (Item item in _demoList) {
       await database.execute('''
         insert into $itemTableName($columnName,$columnDescr,$columnLocation,$columnValue)
@@ -55,36 +55,29 @@ create table $itemTableName (
     throw(Exception("onUpgrade not needed yet"));
   }
 
-  // Initial starter list of Bookmark
+  // Initial starter list
   final List<Item> _demoList = [
     Item('Candlestick', [], location: 'Living room', description:"A single silver candlestick (heavy)", value: 1.50),
     Item('Rope', [], location: 'Parlor', description:"A 10-foot long sisal rope", value: 0.25),
     Item('Knife', [], location: 'Kitchen', description:"A long and very sharp knife"),
   ];
 
-  // Sample locations
-  static final List<String> _locations = [
-    "Bedroom - Master",
-    "Bedroom - Master",
-    "Kitchen",
-    "Living Room",
-    "Study",
-  ];
-
   // CRUD operations:
 
-  /// "Create": Insert a Bookmark.
+  /// "Create": Insert an entity.
   Future<Item> insert(Item item) async {
     debugPrint("LocalDbProvider::insert$item");
     var map = item.toMap();
     map.remove("id");
-    await _db.insert(itemTableName, map);
-    print("Insert returning item #${item}, name ${item.name}");
+    map.remove("images");
+    int id = await _db.insert(itemTableName, map);
+    item.id = id;
+    print("Insert returning item #${item.id}, name ${item.name}");
     return item;
   }
 
-  /// "Read": Get a Bookmark.
-  Future<Item?> getBookmark(int id) async {
+  /// "Read": Get an entity
+  Future<Item?> getItem(int id) async {
     final List<Map> maps = await _db.query(itemTableName,
         columns: allColumns,
         where: '$columnId = ?',
@@ -95,27 +88,25 @@ create table $itemTableName (
     return null;
   }
 
+  /// Retrieve all the entity entries in the table.
   Future<List<Item>> getAllItems() async {
     List<Item> result = [];
     final List<Map> maps = await _db.query(itemTableName,
         orderBy: 'lower($columnName)');
-    if (maps.isNotEmpty) {
-      for (Map m in maps) {
-        result.add(Item.fromMap(m));
-      }
-    } else {
-      // Do no harm!
+    for (Map m in maps) {
+      result.add(Item.fromMap(m));
     }
+    print('getAllItems found ${maps.length} items and created ${result.length} Item objcts');
     return result;
   }
 
-  /// "Update" a Bookmark.
+  /// "Update" an entity.
   Future<int?> update(Item item) async {
     return await _db.update(itemTableName, item.toMap(),
         where: '$columnId = ?', whereArgs: [item.id]);
   }
 
-  /// "Delete" a Bookmark.
+  /// "Delete" an entity.
   Future<int?> delete(int id) async {
     return await _db.delete(itemTableName, where: '$columnId = ?', whereArgs: [id]);
   }

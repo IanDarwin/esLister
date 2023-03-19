@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:eslister/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eslister/model/item.dart';
@@ -54,6 +55,7 @@ class ItemPageState extends State<ItemPage> {
       value: _value,
     );
     newItem.images = _images!;
+    localDbProvider.insert(newItem);
     Navigator.of(context).pop(newItem);
   }
 

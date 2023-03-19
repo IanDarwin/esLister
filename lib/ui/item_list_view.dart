@@ -3,16 +3,19 @@ import 'package:eslister/settings/settings_view.dart';
 import 'package:eslister/ui/item_page.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart' show localDbProvider;
+import 'nav_drawer.dart';
+
 /// Displays a list of Items.
 class ItemListView extends StatelessWidget {
-  const ItemListView({super.key, required this.items});
+  const ItemListView({super.key});
 
   static const routeName = '/';
 
-  final List<Item> items;
-
   @override
   Widget build(BuildContext context) {
+    var all = localDbProvider.getAllItems();
+    print('ItemListView::build()');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog Items'),
@@ -20,51 +23,43 @@ class ItemListView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
               Navigator.restorablePushNamed(context, SettingsView.routeName);
             },
           ),
         ],
       ),
-
-      // To work with lists that may contain a large number of items, it’s best
-      // to use the ListView.builder constructor.
-      //
-      // In contrast to the default ListView constructor, which requires
-      // building all Widgets up front, the ListView.builder constructor lazily
-      // builds Widgets as they’re scrolled into view.
-      body:
-        items.isEmpty ?
-          const Center(child: Text("No items, use + to enter some")) :
-        ListView.builder(
-        // Providing a restorationId allows the ListView to restore the
-        // scroll position when a user leaves and returns to the app after it
-        // has been killed while running in the background.
-        restorationId: 'ItemListView',
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = items[index];
-
-          return ListTile(
-            title: Text('Item ${item.name}'),
-            leading: const CircleAvatar(
-              // Display the Flutter Logo image asset.
-              foregroundImage: AssetImage('assets/img/logo.png'),
+      drawer: const NavDrawer(),
+      body:  ListView(
+          children: [
+            FutureBuilder<List<Item>>(
+              future: all,
+              builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
+                if (snapshot.hasData) {
+                  return Column(children: snapshot.data!.map((item) =>
+                    ListTile(
+                        title: Text('Item ${item.name}'),
+                        leading: const CircleAvatar(
+                          // Display the logo image asset.
+                          foregroundImage: AssetImage('assets/img/logo.png'),
+                        ),
+                        onTap: () {
+                          Navigator.restorablePushNamed(
+                            context,
+                            ItemPage.routeName,
+                          );
+                        }
+                    )
+                ).toList(),
+                );
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text("ERROR IN DB; ${snapshot.error}"));
+                }
+                // Still here, so must be still in progress...
+                return const CircularProgressIndicator();
+              },
             ),
-            onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                ItemPage.routeName,
-              );
-            }
-          );
-        },
-      ),
+          ]),
       floatingActionButton: FloatingActionButton(
           onPressed: () { Navigator.restorablePushNamed<Item>(
             context,
@@ -72,7 +67,6 @@ class ItemListView extends StatelessWidget {
           );
           },
           child:  const Icon(Icons.add)
-
       ),
     );
   }

@@ -21,12 +21,14 @@ class Item {
   }
 
   static Item fromMap(Map map) {
-        return Item(
-          map['name'],
-          map['images'],
-          location: map["location"],
-          description: map['description'],
-          value: map['value'],
-        );
+    var m2 = Map();
+    m2.addAll(map);
+    return Item(
+      m2['name'],
+      m2['images'] ??= <String>[],
+      location: m2["location"],
+      description: m2['description'],
+      value: m2['value'],
+    );
   }
 }

@@ -10,16 +10,17 @@ import 'settings/settings_view.dart';
 import 'settings/settings_service.dart';
 
 late LocalDbProvider localDbProvider;
+late SettingsController settingsController;
 
 void main() async {
   // Set up local database
   WidgetsFlutterBinding.ensureInitialized();
   localDbProvider = LocalDbProvider();
-  await localDbProvider.open('bookmarks.db');
+  await localDbProvider.open('listings.db');
 
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
-  final settingsController = SettingsController(SettingsService());
+  settingsController = SettingsController(SettingsService());
 
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.
@@ -38,9 +39,9 @@ class MyApp extends StatelessWidget {
     required this.settingsController,
   });
 
-  static List<Item> itemList = [];
-
   final SettingsController settingsController;
+
+  static List<Item> itemList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +101,7 @@ class MyApp extends StatelessWidget {
                     return ItemPage(item: Item("", []));
                   case ItemListView.routeName:
                   default:
-                    return ItemListView(items: itemList);
+                    return const ItemListView();
                 }
               },
             );

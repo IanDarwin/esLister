@@ -16,7 +16,7 @@ There will hopefully be plugins to allow uploading the images to various auction
 == N.B. Re Checkout
 
 The program name is "esLister", but Flutter requires a lower-case directory name.
-Github doesn't care, so please, when cloning this repo, call it "eslister" not "esLister".
+Github doesn't care, so please, when cloning this repo, cone it as "eslister" not "esLister".
 
 == Logo
 
@@ -25,7 +25,9 @@ which was a desktop app with similar scope. If you don't like the logo, make me 
 
 == TODO
 
-Tests for database code; integrate into list page and item page
+Integrate database code into list page and item page
+
+Loading and Saving of images in DB
 
 Implement camera action to take picture & add into images list.
 
@@ -33,4 +35,6 @@ Export in JSON until upload plugins magically appear.
 
 Settings: add/remove default locations; presets for home,office
 
-Add overall project name settings, switch between projects.
+Add overall "project name" settings, switch between projects.
+
+Improve "Add image" UI in ItemPage.
