@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:camera/camera.dart';
-import 'package:eslister/main.dart';
-import 'package:eslister/ui/camera_screen.dart';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:eslister/model/item.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:eslister/main.dart';
+import 'package:eslister/ui/camera_screen.dart';
 
 /// Displays/Edits detailed information about one Item.
 class ItemPage extends StatefulWidget {
@@ -165,6 +165,8 @@ class ItemPageState extends State<ItemPage> {
                       const SizedBox(height: 16.0),
                       const Text('Images'),
                       const SizedBox(height: 8.0),
+
+                      // Row for image Add buttons and thumbnails
                       SizedBox(
                           height: 100.0,
                           child: ListView.builder(
@@ -174,9 +176,10 @@ class ItemPageState extends State<ItemPage> {
                                 if (index == _images.length) { // e.g., last one
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Column(
+                                    child: SizedBox(
+                                      height: 100,
+                                      child: Column(
                                       children: [
-                                        const Text("Add Image"),
                                         GestureDetector(
                                           onTap: () async {
                                             String path = await Navigator.of(context).push(MaterialPageRoute(
@@ -187,6 +190,7 @@ class ItemPageState extends State<ItemPage> {
                                           },
                                           child: Container(
                                             width: 100.0,
+                                            height: 40.0,
                                             decoration: BoxDecoration(
                                               border: Border.all(color: Colors.grey),
                                               borderRadius: BorderRadius.circular(4.0),
@@ -200,6 +204,7 @@ class ItemPageState extends State<ItemPage> {
                                           },
                                           child: Container(
                                             width: 100.0,
+                                            height: 40.0,
                                             decoration: BoxDecoration(
                                               border: Border.all(color: Colors.grey),
                                               borderRadius: BorderRadius.circular(4.0),
@@ -209,6 +214,7 @@ class ItemPageState extends State<ItemPage> {
                                         ),
                                     ],
                                     )
+                                  )
                                   );
                                 }
                                 return Padding(

@@ -30,10 +30,6 @@ If you don't like the logo, make me a better one :-)
 
 == TODO
 
-Main list: + GestureDetector, long-press menu with edit, delete
-
-Edit page to populate, d'oh!
-
 Loading and Saving of images in DB (own table)
 
 Export (in JSON only, until upload plugins magically appear).
@@ -42,4 +38,3 @@ Settings: add/remove default locations; presets for home,office
 
 Add a "project name" settings, switch between projects (tabs?).
 
-Tweak "Add image" box / border(s) UI in ItemPage.

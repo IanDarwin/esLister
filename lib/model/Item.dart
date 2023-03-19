@@ -8,7 +8,7 @@ class Item {
   String? location;
   double? value;
 
-  Item(this.name, this.images, {this.description, this.location, this.value});
+  Item(this.name, this.images, {this.id, this.description, this.location, this.value});
 
   @override
   toString() {
@@ -16,13 +16,17 @@ class Item {
   }
 
   Map<String,dynamic> toMap() {
-    return {
+    var map =  {
       "name": name,
       "images": images,
       "description": description,
       "location": location,
       "value": value,
     };
+    if (id != 0) {
+      map['id'] = id;
+    }
+    return map;
   }
 
   static Item fromMap(Map map) {
@@ -31,6 +35,7 @@ class Item {
     return Item(
       m2['name'],
       m2['images'] ??= <String>[],
+      id: m2['id'],
       location: m2["location"],
       description: m2['description'],
       value: m2['value'],

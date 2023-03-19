@@ -17,6 +17,7 @@ class ItemListView extends StatefulWidget {
 }
 
 class ItemListViewState extends State<ItemListView> {
+  late Offset _pos = Offset.zero;
   @override
   Widget build(BuildContext context) {
     var all = localDbProvider.getAllItems();
@@ -41,7 +42,41 @@ class ItemListViewState extends State<ItemListView> {
               builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                 if (snapshot.hasData) {
                   return Column(children: snapshot.data!.map((item) =>
-                    ListTile(
+                      GestureDetector(
+                        onTapDown: (pos) {_getTapPosition(pos);},
+                        //onTap: () => alert(context, p.occupation, title: "Details"),
+                        onLongPress: () async {
+                          final RenderObject? overlay =
+                            Overlay.of(context).context.findRenderObject();
+                          await showMenu(
+                            context: context,
+                            position: RelativeRect.fromRect(
+                                Rect.fromLTWH(_pos.dx, _pos.dy, 50, 50),
+                                Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
+                                    overlay.paintBounds.size.height)),
+                            items: <PopupMenuEntry>[
+                              PopupMenuItem(
+                                onTap: () async => _edit(context, item),
+                                child: Row(
+                                  children: const <Widget>[
+                                    Icon(Icons.edit),
+                                    Text("Edit"),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
+                                onTap: () async => _delete(context, item),
+                                child: Row(
+                                  children: const <Widget>[
+                                    Icon(Icons.delete),
+                                    Text("Delete"),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        child:ListTile(
                         title: Text(item.name),
                         leading: const Icon(Icons.table_bar),
                         onTap: () {
@@ -50,7 +85,8 @@ class ItemListViewState extends State<ItemListView> {
                             ItemPage.routeName,
                           );
                         }
-                    )
+                    ),
+                  )
                 ).toList(),
                 );
                 }
@@ -66,18 +102,52 @@ class ItemListViewState extends State<ItemListView> {
             ),
           ]),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.restorablePushNamed<Item>(
-            context,
-            ItemPage.routeName,
+              context,
+              ItemPage.routeName,
             );
-            print("Booga booga!");
             setState(() {
-              // empty, just trigger rebuild
+              print("Add Action::setState");
+              // empty, but do trigger rebuild
             });
           },
           child:  const Icon(Icons.add)
       ),
     );
+  }
+
+  void _getTapPosition(TapDownDetails tapPosition) {
+    final RenderBox referenceBox = context.findRenderObject() as RenderBox;
+    _pos = referenceBox.globalToLocal(tapPosition.globalPosition);
+  }
+
+  // The PopupMenuItem.onTap does its own Navigator.pop,
+  // so we use Future.delayed() to "delay" around the pop.
+  _edit(context, item) async {
+    debugPrint("Edit $item");
+    Future.delayed(
+        const Duration(seconds: 0),
+            () => Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ItemPage(item: item))));
+    if (!mounted) {
+      return;
+    }
+    setState(() {});
+  }
+
+  _delete(context, item) async {
+    debugPrint("Delete $item");
+    Future.delayed(
+        const Duration(seconds: 0),
+            () async => await localDbProvider.delete(item.id));
+    if (!mounted) {
+      return;
+    }
+    setState(() {});
+  }
+
+  alert(context, message, {title: 'Alert'}) {
+    print(message);
   }
 }
