@@ -69,9 +69,10 @@ class ItemPageState extends State<ItemPage> {
     }
   }
 
+  late CameraController controller;
+
   void _takePicture() async {
-    print("TAKE PICTURE");
-    CameraController controller = CameraController(cameras[0], ResolutionPreset.veryHigh);
+    controller = CameraController(cameras[0], ResolutionPreset.veryHigh);
     controller.initialize().then((_) {
       if (!mounted) {
         return; // initialize is async, so...
@@ -84,6 +85,12 @@ class ItemPageState extends State<ItemPage> {
        }
       });
     });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   void _deleteImage(int index) {

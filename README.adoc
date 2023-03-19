@@ -9,12 +9,12 @@ Hence the name: esLister can stand for:
 
 * Estate Sale Lister
 * Extra Stuff Lister
-* ex's stuff Lister
+* Ex's Stuff Lister
 
-There will hopefully be plugins to allow uploading the
+There will someday be plugins to allow uploading the
 lists to various auction sites.
 
-== N.B. Re Checkout
+== N.B. Re Git Clone
 
 The program name is "esLister", but Flutter requires
 a lower-case directory name.
@@ -36,12 +36,10 @@ Edit page to populate, d'oh!
 
 Loading and Saving of images in DB (own table)
 
-Camera action to take picture & add into images list.
-
 Export (in JSON only, until upload plugins magically appear).
 
 Settings: add/remove default locations; presets for home,office
 
-Add overall "project name" settings, switch between projects (tabs?).
+Add a "project name" settings, switch between projects (tabs?).
 
 Tweak "Add image" box / border(s) UI in ItemPage.
