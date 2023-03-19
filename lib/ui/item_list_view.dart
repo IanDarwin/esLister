@@ -7,11 +7,16 @@ import '../main.dart' show localDbProvider;
 import 'nav_drawer.dart';
 
 /// Displays a list of Items.
-class ItemListView extends StatelessWidget {
+class ItemListView extends StatefulWidget {
   const ItemListView({super.key});
 
   static const routeName = '/';
 
+  @override
+  State<StatefulWidget> createState() => ItemListViewState();
+}
+
+class ItemListViewState extends State<ItemListView> {
   @override
   Widget build(BuildContext context) {
     var all = localDbProvider.getAllItems();
@@ -37,11 +42,8 @@ class ItemListView extends StatelessWidget {
                 if (snapshot.hasData) {
                   return Column(children: snapshot.data!.map((item) =>
                     ListTile(
-                        title: Text('Item ${item.name}'),
-                        leading: const CircleAvatar(
-                          // Display the logo image asset.
-                          foregroundImage: AssetImage('assets/img/logo.png'),
-                        ),
+                        title: Text(item.name),
+                        leading: const Icon(Icons.table_bar),
                         onTap: () {
                           Navigator.restorablePushNamed(
                             context,
@@ -55,16 +57,23 @@ class ItemListView extends StatelessWidget {
                 if (snapshot.hasError) {
                   return Center(child: Text("ERROR IN DB; ${snapshot.error}"));
                 }
-                // Still here, so must be still in progress...
+                if (!snapshot.hasData) {
+                  return Center(child: Text("Nothing catalogued yet. Use + to add."));
+                }
+                // Still here, must be still in progress...
                 return const CircularProgressIndicator();
               },
             ),
           ]),
       floatingActionButton: FloatingActionButton(
-          onPressed: () { Navigator.restorablePushNamed<Item>(
+          onPressed: () {
+            Navigator.restorablePushNamed<Item>(
             context,
             ItemPage.routeName,
-          );
+            );
+            setState(() {
+              // empty, just trigger rebuild
+            });
           },
           child:  const Icon(Icons.add)
       ),

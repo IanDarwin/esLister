@@ -4,37 +4,44 @@ Take pictures of things and catalog them.
 Allows multiple pix per item, a brief description,
 and an estimated valuation.
 
-Useful for estate sales, downsizing, etc.
-Hence the name: esLister can mean:
+Useful for estate sales, yard sales/downsizing, etc.
+Hence the name: esLister can stand for:
 
 * Estate Sale Lister
 * Extra Stuff Lister
 * ex's stuff Lister
 
-There will hopefully be plugins to allow uploading the images to various auction sites.
+There will hopefully be plugins to allow uploading the
+lists to various auction sites.
 
 == N.B. Re Checkout
 
-The program name is "esLister", but Flutter requires a lower-case directory name.
-Github doesn't care, so please, when cloning this repo, cone it as "eslister" not "esLister".
+The program name is "esLister", but Flutter requires
+a lower-case directory name.
+Github doesn't care, so please, when cloning this repo,
+clone it as "eslister" not as "esLister".
 
 == Logo
 
-The tawdry logo is from a sketch I did for an earlier (and now dead) program called jrLister,
-which was a desktop app with similar scope. If you don't like the logo, make me a better one :-)
+The tawdry logo is from a sketch I did for an earlier
+(and now dead) program called jrLister,
+which was a desktop app with similar scope.
+If you don't like the logo, make me a better one :-)
 
 == TODO
 
-Integrate database code into list page and item page
+Main list: + GestureDetector, long-press menu with edit, delete
 
-Loading and Saving of images in DB
+Edit page to populate, d'oh!
 
-Implement camera action to take picture & add into images list.
+Loading and Saving of images in DB (own table)
 
-Export in JSON until upload plugins magically appear.
+Camera action to take picture & add into images list.
+
+Export (in JSON only, until upload plugins magically appear).
 
 Settings: add/remove default locations; presets for home,office
 
-Add overall "project name" settings, switch between projects.
+Add overall "project name" settings, switch between projects (tabs?).
 
-Improve "Add image" UI in ItemPage.
+Tweak "Add image" box / border(s) UI in ItemPage.

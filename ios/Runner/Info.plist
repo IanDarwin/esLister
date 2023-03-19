@@ -25,9 +25,11 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>to enter your course runs into your device's calendar.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>to capture and upload pictures of equipment issues, or scans of attendee registrars.</string>
+	<string>to capture and upload pictures of items.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>to capture and upload pictures of equipment issues, or scans of attendee registrars.</string>
+	<string>to manage pictures of items.</string>
+	<key>NsMicrophoneUsageDescription</key>
+	<string>Not used, but needed by camera plugin?</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

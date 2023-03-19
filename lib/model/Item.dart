@@ -10,6 +10,11 @@ class Item {
 
   Item(this.name, this.images, {this.description, this.location, this.value});
 
+  @override
+  toString() {
+    return "Item #$id Named $name";
+  }
+
   Map<String,dynamic> toMap() {
     return {
       "name": name,

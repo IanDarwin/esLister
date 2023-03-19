@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:eslister/ui/item_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,6 +12,7 @@ import 'settings/settings_service.dart';
 
 late LocalDbProvider localDbProvider;
 late SettingsController settingsController;
+late List cameras;
 
 void main() async {
   // Set up local database
@@ -21,6 +23,9 @@ void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   settingsController = SettingsController(SettingsService());
+
+  // Setup up for camera use
+  cameras = await availableCameras();
 
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.

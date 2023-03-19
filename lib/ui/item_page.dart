@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:eslister/main.dart';
 import 'package:flutter/material.dart';
 
@@ -69,7 +70,20 @@ class ItemPageState extends State<ItemPage> {
   }
 
   void _takePicture() async {
-    print("ADD CODE TO TAKE PICTURE");
+    print("TAKE PICTURE");
+    CameraController controller = CameraController(cameras[0], ResolutionPreset.veryHigh);
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return; // initialize is async, so...
+      }
+      controller.takePicture().then((XFile? file) {
+       if (mounted && file != null) {
+         setState(() {
+           _images.add(file.path);
+         });
+       }
+      });
+    });
   }
 
   void _deleteImage(int index) {

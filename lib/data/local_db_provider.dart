@@ -66,7 +66,7 @@ create table $itemTableName (
 
   /// "Create": Insert an entity.
   Future<Item> insert(Item item) async {
-    debugPrint("LocalDbProvider::insert$item");
+    debugPrint("LocalDbProvider::inserting $item");
     var map = item.toMap();
     map.remove("id");
     map.remove("images");
