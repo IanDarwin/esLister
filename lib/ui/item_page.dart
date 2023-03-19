@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:eslister/main.dart';
+import 'package:eslister/ui/camera_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eslister/model/item.dart';
@@ -67,30 +68,6 @@ class ItemPageState extends State<ItemPage> {
         _images.add(image.path);
       });
     }
-  }
-
-  late CameraController controller;
-
-  void _takePicture() async {
-    controller = CameraController(cameras[0], ResolutionPreset.veryHigh);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return; // initialize is async, so...
-      }
-      controller.takePicture().then((XFile? file) {
-       if (mounted && file != null) {
-         setState(() {
-           _images.add(file.path);
-         });
-       }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
   }
 
   void _deleteImage(int index) {
@@ -202,7 +179,11 @@ class ItemPageState extends State<ItemPage> {
                                         const Text("Add Image"),
                                         GestureDetector(
                                           onTap: () async {
-                                            _takePicture();
+                                            String path = await Navigator.of(context).push(MaterialPageRoute(
+                                                builder: (context) => (TakePictureScreen())));
+                                            setState(() {
+                                              _images.add(path);
+                                            });
                                           },
                                           child: Container(
                                             width: 100.0,

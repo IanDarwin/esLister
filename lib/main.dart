@@ -104,6 +104,7 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case ItemPage.routeName:
                     return ItemPage(item: Item("", []));
+                    // TakePictureScreen route not useful on its own, so not here
                   case ItemListView.routeName:
                   default:
                     return const ItemListView();

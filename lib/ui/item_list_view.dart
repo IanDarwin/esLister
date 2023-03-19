@@ -71,6 +71,7 @@ class ItemListViewState extends State<ItemListView> {
             context,
             ItemPage.routeName,
             );
+            print("Booga booga!");
             setState(() {
               // empty, just trigger rebuild
             });

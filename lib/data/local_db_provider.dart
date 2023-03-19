@@ -96,7 +96,7 @@ create table $itemTableName (
     for (Map m in maps) {
       result.add(Item.fromMap(m));
     }
-    print('getAllItems found ${maps.length} items and created ${result.length} Item objcts');
+    print('getAllItems found ${maps.length} items and created ${result.length} Item objects');
     return result;
   }
 
