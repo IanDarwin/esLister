@@ -38,6 +38,14 @@ class NavDrawer extends StatelessWidget {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.cloud),
+              title: const Text('Export Project'),
+              onTap: () => {
+                // Navigator.push(context, MaterialPageRoute(
+                //     builder: (context) => const ExportProjectsPage()))
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () => {
