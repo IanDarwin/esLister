@@ -72,18 +72,17 @@ create table $itemTableName (
     map['images'] = item.images.toString();
     int id = await _db.insert(itemTableName, map);
     item.id = id;
-    print("Insert returning item #${item.id}, name ${item.name}");
     return item;
   }
 
   /// "Read": Get an entity
   Future<Item?> getItem(int id) async {
+    debugPrint("LocalDbProvider getItem($id)");
     final List<Map> maps = await _db.query(itemTableName,
         columns: allColumns,
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.isNotEmpty) {
-      print("Maps.first = ${maps.first} out of ${maps.length}");
       return Item.fromMap(maps.first);
     }
     return null;
@@ -97,17 +96,15 @@ create table $itemTableName (
     for (Map m in maps) {
       result.add(Item.fromMap(m));
     }
-    print('getAllItems found ${maps.length} items and created ${result.length} Item objects');
+    print('getAllItems created ${result.length} Item objects');
     return result;
   }
 
   /// "Update" an entity.
   Future<int?> update(Item item) async {
-    print("LocalDBProvider::update($item)");
     List<String> images = item.images;
     var map = item.toMap();
-    //map['images'] = images.toString();
-    print('Updating #${item.id} as $map');
+    debugPrint('LocalDBProvider Updating #${item.id} as $map');
     return await _db.update(itemTableName, map,
         where: '$columnId = ?', whereArgs: [item.id]);
   }
