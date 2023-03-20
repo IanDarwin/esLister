@@ -44,7 +44,6 @@ class ItemListViewState extends State<ItemListView> {
                   return Column(children: snapshot.data!.map((item) =>
                       GestureDetector(
                         onTapDown: (pos) {_getTapPosition(pos);},
-                        //onTap: () => alert(context, p.occupation, title: "Details"),
                         onLongPress: () async {
                           final RenderObject? overlay =
                             Overlay.of(context).context.findRenderObject();
@@ -79,22 +78,19 @@ class ItemListViewState extends State<ItemListView> {
                         child:ListTile(
                         title: Text(item.name),
                         leading: const Icon(Icons.table_bar),
-                        onTap: () {
-                          Navigator.restorablePushNamed(
-                            context,
-                            ItemPage.routeName,
-                          );
-                        }
+                        onTap: () => _edit(context, item),
                     ),
                   )
                 ).toList(),
                 );
                 }
                 if (snapshot.hasError) {
+                  debugPrint("ERROR IN DB: ${snapshot.error}");
+                  debugPrint(snapshot.stackTrace.toString());
                   return Center(child: Text("ERROR IN DB; ${snapshot.error}"));
                 }
                 if (!snapshot.hasData) {
-                  return Center(child: Text("Nothing catalogued yet. Use + to add."));
+                  return const Center(child: Text("Nothing catalogued yet. Use + to add."));
                 }
                 // Still here, must be still in progress...
                 return const CircularProgressIndicator();
@@ -125,12 +121,13 @@ class ItemListViewState extends State<ItemListView> {
   // The PopupMenuItem.onTap does its own Navigator.pop,
   // so we use Future.delayed() to "delay" around the pop.
   _edit(context, item) async {
-    debugPrint("Edit $item");
-    Future.delayed(
+    print("Edit $item");
+    await Future.delayed(
         const Duration(seconds: 0),
             () => Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ItemPage(item: item))));
+              builder: (context) => ItemPage(item: item))));
     if (!mounted) {
+      print("Not mounted!!");
       return;
     }
     setState(() {});
@@ -138,7 +135,7 @@ class ItemListViewState extends State<ItemListView> {
 
   _delete(context, item) async {
     debugPrint("Delete $item");
-    Future.delayed(
+    await Future.delayed(
         const Duration(seconds: 0),
             () async => await localDbProvider.delete(item.id));
     if (!mounted) {

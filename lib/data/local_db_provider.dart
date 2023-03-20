@@ -1,5 +1,3 @@
-/// Data Access for entity Data
-
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -12,7 +10,8 @@ const columnName = 'name';
 const columnDescr = 'description';
 const columnLocation = 'location';
 const columnValue = 'value';
-const allColumns = [columnId, columnRemoteId, columnName, columnDescr, columnLocation, columnValue];
+const columnImages = 'images';
+const allColumns = [columnId, columnRemoteId, columnName, columnDescr, columnLocation, columnValue, columnImages];
 
 /// Local Data provider.
 class LocalDbProvider {
@@ -39,6 +38,7 @@ create table $itemTableName (
   $columnName text not null,
   $columnDescr text,
   $columnLocation text,
+  $columnImages text,
   $columnValue double
   )
 ''');
@@ -69,7 +69,7 @@ create table $itemTableName (
     debugPrint("LocalDbProvider::inserting $item");
     var map = item.toMap();
     map.remove("id");
-    map.remove("images");
+    map['images'] = item.images.toString();
     int id = await _db.insert(itemTableName, map);
     item.id = id;
     print("Insert returning item #${item.id}, name ${item.name}");
@@ -83,6 +83,7 @@ create table $itemTableName (
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.isNotEmpty) {
+      print("Maps.first = ${maps.first} out of ${maps.length}");
       return Item.fromMap(maps.first);
     }
     return null;
@@ -102,7 +103,12 @@ create table $itemTableName (
 
   /// "Update" an entity.
   Future<int?> update(Item item) async {
-    return await _db.update(itemTableName, item.toMap(),
+    print("LocalDBProvider::update($item)");
+    List<String> images = item.images;
+    var map = item.toMap();
+    map['images'] = images.toString();
+    print('Updating #${item.id} as $map');
+    return await _db.update(itemTableName, map,
         where: '$columnId = ?', whereArgs: [item.id]);
   }
 

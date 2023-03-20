@@ -37,10 +37,10 @@ class ItemPageState extends State<ItemPage> {
   void initState() {
     super.initState();
     _name = widget.item.name;
-    _images = widget.item.images;
     _description = widget.item.description;
     _location = widget.item.location;
     _value = widget.item.value;
+    _images = widget.item.images;
   }
 
   void _saveForm() {
@@ -49,16 +49,20 @@ class ItemPageState extends State<ItemPage> {
       return;
     }
     _formKey.currentState!.save();
-    Item newItem = Item(
-      _name!,
-      _images,
-      description: _description,
-      location: _location,
-      value: _value,
-    );
-    newItem.images = _images!;
-    localDbProvider.insert(newItem);
-    Navigator.of(context).pop(newItem);
+
+    // Copy updated fields into entity, leaving "id" unchanged
+    widget.item.name = _name!;
+    widget.item.description = _description;
+    widget.item.location = _location;
+    widget.item.value = _value;
+    widget.item.images = _images;
+
+    if (widget.item.id == null || widget.item.id == 0) {
+      localDbProvider.insert(widget.item);
+    } else {
+      localDbProvider.update(widget.item);
+    }
+    Navigator.of(context).pop(widget.item);
   }
 
   void _addImage() async {

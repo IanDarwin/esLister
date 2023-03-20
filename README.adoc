@@ -23,18 +23,22 @@ clone it as "eslister" not as "esLister".
 
 == Logo
 
-The tawdry logo is from a sketch I did for an earlier
+The terrible logo is from a sketch I did for an earlier
 (and now dead) program called jrLister,
 which was a desktop app with similar scope.
-If you don't like the logo, make me a better one :-)
+It's meant to represent "taking a look around".
+If you can make a better logo, do it, and send a pull request.
 
 == TODO
 
-Loading and Saving of images in DB (own table)
-
 Export (in JSON only, until upload plugins magically appear).
 
-Settings: add/remove default locations; presets for home,office
+Nav bar needs some love.
+
+Settings needs love too:
+	add/remove default locations; presets for home,office
 
 Add a "project name" settings, switch between projects (tabs?).
+	e.g., "Smith Estate" vs "Sidhartha Estate", or
+	"Cheap Leftover stuff" vs "Expensive Estate Stuff"
 

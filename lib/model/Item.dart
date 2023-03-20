@@ -1,7 +1,7 @@
 
 /// Describe one item in the location being assessed
 class Item {
-  int? id;
+  int? id = 0;
   String name;
   List<String> images = [];
   String? description;
@@ -18,7 +18,7 @@ class Item {
   Map<String,dynamic> toMap() {
     var map =  {
       "name": name,
-      "images": images,
+      "images": images.toString(),
       "description": description,
       "location": location,
       "value": value,
@@ -30,15 +30,38 @@ class Item {
   }
 
   static Item fromMap(Map map) {
-    var m2 = Map();
-    m2.addAll(map);
+    String imList = (map['images'] != null) ? map['images'] : "[]";
     return Item(
-      m2['name'],
-      m2['images'] ??= <String>[],
-      id: m2['id'],
-      location: m2["location"],
-      description: m2['description'],
-      value: m2['value'],
+      map['name'],
+      stringToImageNameList(imList),
+      id: map['id'],
+      location: map["location"],
+      description: map['description'],
+      value: map['value'],
     );
+  }
+
+  // Convert List<String> of filenames to valid JSON String
+  static String imageNameListToString(List<String> list) {
+    var sb = StringBuffer('{"images":["');
+    sb.writeAll(list, '","');
+    sb.write('"]}');
+    String ret = sb.toString();
+    print('imageNameListToString: $ret');
+    return ret;
+  }
+  // Convert the imageNameListToString()ed form of a List<String> back into the List.
+  static List<String> stringToImageNameList(String raw) {
+    if (raw.isEmpty || "[]" == raw) {
+      return [];
+    }
+    // 11 = strlen(-->'{"images": <--);
+    String raw2 = raw.substring(9, raw.length - 1);
+    List<String> borked = raw2.substring(1, raw2.length - 1).split('","');
+    print("Broken has ${borked.length} items: $borked");
+    for (int i = 0; i < borked.length; i++) {
+      borked[i] = borked[i].trim();
+    }
+    return borked;
   }
 }

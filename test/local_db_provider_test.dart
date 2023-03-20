@@ -5,16 +5,16 @@ import 'package:sqflite/sqflite.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
-  var _db = LocalDbProvider();
+  var db = LocalDbProvider();
   setUpAll(() {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   });
   test('insert and find', () async {
-    await _db.open(inMemoryDatabasePath);
+    await db.open(inMemoryDatabasePath);
     var item = Item("Picasso Nose", []);
-    Item ret = await(_db.insert(item));
-    Item? found = await _db.getItem(ret.id!);
+    Item ret = await(db.insert(item));
+    Item? found = await db.getItem(ret.id!);
     expect(item.name, found!.name);
   });
 }
