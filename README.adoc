@@ -9,9 +9,9 @@ Hence the name: esLister can stand for:
 
 * Estate Sale Lister
 * Extra Stuff Lister
-* Ex's Stuff Lister
+* Ex's Stuff Lister (only if they walked out on you and left stuff behind!)
 
-There will someday be plugins to allow uploading the
+There should someday be plugins to allow uploading the
 lists to various auction sites.
 
 == N.B. Re Git Clone
@@ -23,22 +23,20 @@ clone it as "eslister" not as "esLister".
 
 == Logo
 
-The terrible logo is from a sketch I did for an earlier
+The terrible logo - of a person happy because they're de-cluttering -
+is from a sketch I did for an earlier
 (and now dead) program called jrLister,
 which was a desktop app with similar scope.
-It's meant to represent "taking a look around".
+It's meant to represent "taking a look around",
+which is what you're doing when using this app.
 If you can make a better logo, do it, and send a pull request.
 
 == TODO
 
-Export (in JSON only, until upload plugins magically appear).
+The ToDo list for this project has moved to
+https://github.com/IanDarwin/esLister/issues/[our github page].
 
-Nav bar needs some love.
-
-Settings needs love too:
-	add/remove default locations; presets for home,office
-
-Add a "project name" settings, switch between projects (tabs?).
-	e.g., "Smith Estate" vs "Sidhartha Estate", or
-	"Cheap Leftover stuff" vs "Expensive Estate Stuff"
+If you are allergic to github for some reason, you can send
+suggestions or old-style patches via email; start at
+https://darwinsys.com/contact[my contact-me page].
 
