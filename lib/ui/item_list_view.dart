@@ -69,6 +69,16 @@ class ItemListViewState extends State<ItemListView> {
                                 ),
                               ),
                               PopupMenuItem(
+                                enabled: false,
+                                onTap: () async => _doUpload(context, item),
+                                child: Row(
+                                  children: const <Widget>[
+                                    Icon(Icons.delete),
+                                    Text("Upload"),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
                                 onTap: () async => _delete(context, item),
                                 child: Row(
                                   children: const <Widget>[
@@ -147,6 +157,10 @@ class ItemListViewState extends State<ItemListView> {
       return;
     }
     setState(() {});
+  }
+
+  _doUpload(context, item) async {
+    print("Upload capability not written yet");
   }
 
   alert(context, message, {title: 'Alert'}) {
