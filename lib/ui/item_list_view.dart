@@ -1,10 +1,12 @@
+import 'package:eslister/main.dart' show localDbProvider;
 import 'package:eslister/model/item.dart';
 import 'package:eslister/settings/settings_view.dart';
 import 'package:eslister/ui/item_page.dart';
+import 'package:eslister/ui/nav_drawer.dart';
+
 import 'package:flutter/material.dart';
 
-import '../main.dart' show localDbProvider;
-import 'nav_drawer.dart';
+const noDataMessage = "Nothing catalogued yet. Use + to add.";
 
 /// Displays a list of Items.
 class ItemListView extends StatefulWidget {
@@ -41,6 +43,9 @@ class ItemListViewState extends State<ItemListView> {
               future: all,
               builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                 if (snapshot.hasData) {
+                  if ((snapshot.data as List<Item>).isEmpty) {
+                    return const Center(child: Text(noDataMessage));
+                  }
                   return Column(children: snapshot.data!.map((item) =>
                       GestureDetector(
                         onTapDown: (pos) {_getTapPosition(pos);},
@@ -90,7 +95,7 @@ class ItemListViewState extends State<ItemListView> {
                   return Center(child: Text("ERROR IN DB; ${snapshot.error}"));
                 }
                 if (!snapshot.hasData) {
-                  return const Center(child: Text("Nothing catalogued yet. Use + to add."));
+                  return const Center(child: Text(noDataMessage));
                 }
                 // Still here, must be still in progress...
                 return const CircularProgressIndicator();
