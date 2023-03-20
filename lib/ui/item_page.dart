@@ -65,6 +65,10 @@ class ItemPageState extends State<ItemPage> {
     Navigator.of(context).pop(widget.item);
   }
 
+  void _cancelForm() {
+    Navigator.of(context).pop();
+  }
+
   void _addImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -261,9 +265,18 @@ class ItemPageState extends State<ItemPage> {
                               }
                           )
                       ),
-                      ElevatedButton(
-                        onPressed: () => _saveForm(),
-                        child: Text("Save"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => _cancelForm(),
+                            child: Text("Cancel"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _saveForm(),
+                            child: Text("Save"),
+                          ),
+                        ]
                       ),
                     ]
                 )

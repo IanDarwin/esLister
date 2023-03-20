@@ -7,11 +7,13 @@ const itemTableName = 'items';
 const columnId = 'id';
 const columnRemoteId = "remoteId";
 const columnName = 'name';
+const columnProjectId = 'project_id';
 const columnDescr = 'description';
 const columnLocation = 'location';
 const columnValue = 'value';
 const columnImages = 'images';
-const allColumns = [columnId, columnRemoteId, columnName, columnDescr, columnLocation, columnValue, columnImages];
+const allColumns = [columnId, columnRemoteId, columnName, columnProjectId,
+  columnDescr, columnLocation, columnValue, columnImages];
 
 /// Local Data provider.
 class LocalDbProvider {
@@ -35,6 +37,7 @@ class LocalDbProvider {
 create table $itemTableName ( 
   $columnId integer primary key autoincrement,
   $columnRemoteId text,
+  $columnProjectId int,
   $columnName text not null,
   $columnDescr text,
   $columnLocation text,

@@ -3,6 +3,7 @@
 class Item {
   int? id = 0;
   String name;
+  static const int projectId = 1; // For future use
   List<String> images = [];
   String? description;
   String? location;
