@@ -110,6 +110,8 @@ class ItemPageState extends State<ItemPage> {
                         initialValue: _description,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: 'Description'),
+                        minLines: 3,
+                        maxLines: 5,
                         onSaved: (value) {
                           _description = value;
                         },
@@ -128,7 +130,7 @@ class ItemPageState extends State<ItemPage> {
                           }
                           return TextFormField(
                             controller: editingController,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.name,
                             decoration: InputDecoration(labelText: 'Location'),
                             focusNode: focusNode,
                             onFieldSubmitted: (loc) {
@@ -194,7 +196,7 @@ class ItemPageState extends State<ItemPage> {
                                           },
                                           child: Container(
                                             width: 100.0,
-                                            height: 40.0,
+                                            height: 48.0,
                                             decoration: BoxDecoration(
                                               border: Border.all(color: Colors.grey),
                                               borderRadius: BorderRadius.circular(4.0),
@@ -202,13 +204,14 @@ class ItemPageState extends State<ItemPage> {
                                             child: const Icon(Icons.camera),
                                           ),
                                         ),
+                                        SizedBox(height:4),
                                         GestureDetector(
                                           onTap: () async {
                                             _addImage();
                                           },
                                           child: Container(
                                             width: 100.0,
-                                            height: 40.0,
+                                            height: 48.0,
                                             decoration: BoxDecoration(
                                               border: Border.all(color: Colors.grey),
                                               borderRadius: BorderRadius.circular(4.0),
