@@ -99,7 +99,9 @@ class ItemPageState extends State<ItemPage> {
                       TextFormField(
                         initialValue: _name,
                         keyboardType: TextInputType.name,
-                        decoration: InputDecoration(labelText: 'Name'),
+                        decoration: const InputDecoration(
+                          hintText: 'Item Name',
+                            labelText: 'Name'),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter a name';
@@ -113,7 +115,9 @@ class ItemPageState extends State<ItemPage> {
                       TextFormField(
                         initialValue: _description,
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: 'Description'),
+                        decoration: const InputDecoration(
+                            hintText: "About the article",
+                            labelText: 'Description'),
                         minLines: 3,
                         maxLines: 5,
                         onSaved: (value) {
@@ -135,7 +139,9 @@ class ItemPageState extends State<ItemPage> {
                           return TextFormField(
                             controller: editingController,
                             keyboardType: TextInputType.name,
-                            decoration: InputDecoration(labelText: 'Location'),
+                            decoration: const InputDecoration(
+                                hintText: 'What room it\'s in',
+                                labelText: 'Location'),
                             focusNode: focusNode,
                             onFieldSubmitted: (loc) {
                               onFieldSubmitted();
@@ -155,7 +161,9 @@ class ItemPageState extends State<ItemPage> {
                       ),
                       TextFormField(
                         initialValue: _value != null ? _value.toString() : '',
-                        decoration: InputDecoration(labelText: 'Value'),
+                        decoration: const InputDecoration(
+                            hintText: 'Item\' worth (local currency)',
+                            labelText: 'Value'),
                         keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                         validator: (value) {
                           if (value!.isEmpty) {
