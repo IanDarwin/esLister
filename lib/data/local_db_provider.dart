@@ -106,7 +106,7 @@ create table $itemTableName (
     print("LocalDBProvider::update($item)");
     List<String> images = item.images;
     var map = item.toMap();
-    map['images'] = images.toString();
+    //map['images'] = images.toString();
     print('Updating #${item.id} as $map');
     return await _db.update(itemTableName, map,
         where: '$columnId = ?', whereArgs: [item.id]);

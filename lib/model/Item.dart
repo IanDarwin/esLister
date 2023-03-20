@@ -18,7 +18,7 @@ class Item {
   Map<String,dynamic> toMap() {
     var map =  {
       "name": name,
-      "images": images.toString(),
+      "images": imageNameListToString(images),
       "description": description,
       "location": location,
       "value": value,
@@ -51,17 +51,21 @@ class Item {
     return ret;
   }
   // Convert the imageNameListToString()ed form of a List<String> back into the List.
-  static List<String> stringToImageNameList(String raw) {
-    if (raw.isEmpty || "[]" == raw) {
+  static List<String> stringToImageNameList(String input) {
+    if (input.isEmpty || "[]" == input) {
       return [];
     }
-    // 11 = strlen(-->'{"images": <--);
-    String raw2 = raw.substring(9, raw.length - 1);
-    List<String> borked = raw2.substring(1, raw2.length - 1).split('","');
-    print("Broken has ${borked.length} items: $borked");
-    for (int i = 0; i < borked.length; i++) {
-      borked[i] = borked[i].trim();
+    // input is: {"images":["/data/user/0/com.darwinsys/cache/CAP86.jpg","/data/user/0/com.darwinsys/cache/CAP87.jpg"]}
+    print("stringToImageNameList: input = $input");
+
+    String value = input.substring(10, input.length - 1);
+    // Value should now be: ["/data/user/0/com.darwinsys/cache/CAP86.jpg","/data/user/0/com.darwinsys/cache/CAP87.jpg"]
+    print("value = $value");
+    List<String> broken = value.substring(1, value.length - 1).split('","');
+    print("Broken has ${broken.length} items: $broken");
+    for (int i = 0; i < broken.length; i++) {
+      broken[i] = broken[i].trim().replaceAll('"', '');
     }
-    return borked;
+    return broken;
   }
 }
