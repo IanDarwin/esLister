@@ -27,6 +27,7 @@ class ItemListViewState extends State<ItemListView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog Items'),
+        backgroundColor: Colors.lightBlueAccent,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -112,6 +113,26 @@ class ItemListViewState extends State<ItemListView> {
               },
             ),
           ]),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.lightBlueAccent,
+        shape: const CircularNotchedRectangle(),
+        child: SizedBox(
+          height: 50,
+          child:
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                child: Text("Project 1"),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text("Project 2"),
+              ),
+            ],
+          )
+        )
+      ),
       floatingActionButton: FloatingActionButton(
           onPressed: () async {
             Navigator.restorablePushNamed<Item>(
