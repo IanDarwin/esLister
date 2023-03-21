@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:eslister/model/project.dart';
 
 /// Edit a project
-class EditProjectsPage extends StatefulWidget {
-  final List<Project> projects;
+class ProjectEditPage extends StatefulWidget {
+  final Project project;
 
-  EditProjectsPage({required this.projects});
+  ProjectEditPage({required this.project});
 
   @override
-  _EditProjectsPageState createState() => _EditProjectsPageState();
+  _ProjectEditPageState createState() => _ProjectEditPageState();
 }
 
-class _EditProjectsPageState extends State<EditProjectsPage> {
+class _ProjectEditPageState extends State<ProjectEditPage> {
   List<Project> _editedProjects = [];
 
   @override
   void initState() {
     super.initState();
     // Create a copy of the list of projects to edit
-    _editedProjects = List.from(widget.projects);
+    //_editedProjects = List.from(widget.projects);
   }
 
   @override
@@ -27,49 +27,44 @@ class _EditProjectsPageState extends State<EditProjectsPage> {
       appBar: AppBar(
         title: Text("Edit Projects"),
       ),
-      body: ListView.builder(
-        itemCount: _editedProjects.length + 1,
-        itemBuilder: (context, index) {
-          if (index == _editedProjects.length) {
-            // Add a button to save changes
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Replace this with your own code to save changes
-                  Navigator.pop(context, _editedProjects);
-                },
-                child: Text("Save Changes"),
-              ),
-            );
-          } else {
-            final project = _editedProjects[index];
-            return ListTile(
-              title: TextFormField(
-                initialValue: project.name,
-                decoration: InputDecoration(
-                  labelText: "Name",
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    project.name = value;
-                  });
-                },
-              ),
-              subtitle: TextFormField(
-                initialValue: project.description ?? "",
-                decoration: InputDecoration(
-                  labelText: "Description",
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    project.description = value.isNotEmpty ? value : null;
-                  });
-                },
-              ),
-            );
-          }
-        },
+      body: Column(children: [
+        // Add a button to save changes
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: () {
+              // XXX save changes
+              Navigator.pop(context, _editedProjects);
+            },
+            child: Text("Save Changes"),
+          ),
+        ),
+
+        ListTile(
+          title: TextFormField(
+            initialValue: widget.project.name,
+            decoration: InputDecoration(
+              labelText: "Name",
+            ),
+            onChanged: (value) {
+              setState(() {
+                widget.project.name = value;
+              });
+            },
+          ),
+          subtitle: TextFormField(
+            initialValue: widget.project.description ?? "",
+            decoration: InputDecoration(
+              labelText: "Description",
+            ),
+            onChanged: (value) {
+              setState(() {
+                widget.project.description = value.isNotEmpty ? value : null;
+              });
+            },
+          ),
+        ),
+      ],
       ),
     );
   }

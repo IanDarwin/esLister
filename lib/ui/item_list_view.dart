@@ -3,8 +3,12 @@ import 'package:eslister/model/item.dart';
 import 'package:eslister/settings/settings_view.dart';
 import 'package:eslister/ui/item_page.dart';
 import 'package:eslister/ui/nav_drawer.dart';
+import 'package:eslister/ui/project_edit_page.dart';
+import 'package:eslister/ui/project_list_page.dart';
 
 import 'package:flutter/material.dart';
+
+import '../model/project.dart';
 
 const noDataMessage = "Nothing catalogued yet. Use + to add.";
 
@@ -17,6 +21,8 @@ class ItemListView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => ItemListViewState();
 }
+
+List<Project> _projects = [];
 
 class ItemListViewState extends State<ItemListView> {
   late Offset _pos = Offset.zero;
@@ -120,7 +126,15 @@ class ItemListViewState extends State<ItemListView> {
           height: 50,
           child:
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => (const ProjectListPage())));
+                },
+                  child: Icon(Icons.edit),
+              ),
               ElevatedButton(
                 onPressed: () {},
                 child: Text("Project 1"),
@@ -182,6 +196,22 @@ class ItemListViewState extends State<ItemListView> {
 
   _doUpload(context, item) async {
     print("Upload capability not written yet");
+  }
+
+  void _editSelectedProject(BuildContext context) async {
+    int _selectedProjectIndex = 0;
+    final editedProject = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProjectEditPage(project: _projects[_selectedProjectIndex]),
+      ),
+    );
+
+    if (editedProject != null) {
+      setState(() {
+        _projects[_selectedProjectIndex] = editedProject;
+      });
+    }
   }
 
   alert(context, message, {title: 'Alert'}) {

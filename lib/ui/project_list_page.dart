@@ -1,3 +1,4 @@
+import 'package:eslister/ui/project_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eslister/model/project.dart';
 
@@ -25,7 +26,7 @@ class ProjectListPageState extends State<ProjectListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select Project"),
+        title: Text("Projects List"),
       ),
       body: FutureBuilder<List<Project>>(
         future: _getProjects(),
@@ -39,6 +40,8 @@ class ProjectListPageState extends State<ProjectListPage> {
                   title: Text(project.name),
                   subtitle: project.description != null ? Text(project.description!) : null,
                   onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => (ProjectEditPage(project: project))));
                     setState(() {
                       _selectedProjectId = project.id!;
                     });
