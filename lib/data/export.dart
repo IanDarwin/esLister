@@ -4,24 +4,24 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:archive/archive.dart';
 
-import 'package:eslister/model/Item.dart';
+import 'package:eslister/model/item.dart';
 import 'package:eslister/model/project.dart';
-import 'package:eslister/data/local_db_provider.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../main.dart';
 
-void exportToZip() async
-{
+Future<void> exportToZip() async {
   // Create the ZIP archive
   final archive = Archive();
 
   List<Project> projects = await localDbProvider.getAllProjects();
 
   for (Project proj in projects) {
-
-    for (Item item in proj.items()) {
-
-      var generatedString = json.encode(item.toMap());
+    print('Project $proj');
+    for (int itemId in proj.items) {
+      print('Item $itemId in project ${proj.id}');
+      Item? item = await localDbProvider.getItem(itemId);
+      var generatedString = json.encode(item!.toMap());
       archive.addFile(
         ArchiveFile('${item.name}.txt',
             generatedString.length, generatedString.codeUnits),
@@ -39,7 +39,12 @@ void exportToZip() async
 
   // Save the ZIP archive to a file
   // XXX use package to find portable location for this!
-  final zipFile = File('/sdcard/archive.zip');
+  // final Directory appDocsDir = await getApplicationDocumentsDirectory();
+  final Directory appDocsDir = Directory("/sdcard/download");
+  var fullPath = "${appDocsDir.path}/archive.zip";
+  final zipFile = File(fullPath);
   zipFile.writeAsBytesSync(ZipEncoder().encode(archive)!);
+
+  print("Archive written to $fullPath");
 }
 

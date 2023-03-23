@@ -1,6 +1,7 @@
 import 'package:eslister/ui/project_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eslister/settings/settings_view.dart';
+import 'package:eslister/data/export.dart';
 import 'package:eslister/main.dart' show settingsController;
 
 class NavDrawer extends StatelessWidget {
@@ -40,9 +41,11 @@ class NavDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.cloud),
               title: const Text('Export Project'),
-              onTap: () => {
+              onTap: () async  {
                 // Navigator.push(context, MaterialPageRoute(
                 //     builder: (context) => const ExportProjectsPage()))
+                await exportToZip();
+                print("Export done? Check archive.zip");
               },
             ),
             ListTile(

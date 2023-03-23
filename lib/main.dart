@@ -15,8 +15,10 @@ late SettingsController settingsController;
 late List cameras;
 
 void main() async {
-  // Set up local database
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Set up local database
+  //WidgetsFlutterBinding.ensureInitialized();
   localDbProvider = LocalDbProvider();
   await localDbProvider.open('listings.db');
 

@@ -3,13 +3,13 @@
 class Item {
   int? id = 0;
   String name;
-  static const int projectId = 1; // For future use
+  int projectId;
   List<String> images = [];
   String? description;
   String? location;
   double? value;
 
-  Item(this.name, this.images, {this.id, this.description, this.location, this.value});
+  Item(this.name, this.images, {this.id, this.projectId = 1, this.description, this.location, this.value});
 
   @override
   toString() {

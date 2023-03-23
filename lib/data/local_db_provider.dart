@@ -66,11 +66,11 @@ create table $tableNameItems (
     id integer primary key autoincrement,
     name text,
     description text
-  }''');
+  )''');
     for (Project project in _demoProjects) {
       await database.execute('''
-        insert into $tableNameProjects(name, description)
-        values('${project.name}', '${project.description}');
+        insert into $tableNameProjects(id, name, description)
+        values(${project.id}, '${project.name}', '${project.description}');
         ''');
     }
   }
@@ -83,9 +83,9 @@ create table $tableNameItems (
   
   // Initial starter date
   final List<Item> _demoItems = [
-    Item('Candlestick', [], location: 'Living room', description:"A single silver candlestick (heavy)", value: 1.50),
-    Item('Rope', [], location: 'Parlor', description:"A 10-foot long sisal rope", value: 0.25),
-    Item('Knife', [], location: 'Kitchen', description:"A long and very sharp knife"),
+    Item('Candlestick', [], projectId: 1, location: 'Living room', description:"A single silver candlestick (heavy)", value: 1.50),
+    Item('Rope', [], projectId: 1, location: 'Parlor', description:"A 10-foot long sisal rope", value: 0.25),
+    Item('Knife', [], projectId: 1, location: 'Kitchen', description:"A long and very sharp knife"),
   ];
   
   final List<Project> _demoProjects = [
