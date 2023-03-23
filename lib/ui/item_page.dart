@@ -58,9 +58,9 @@ class ItemPageState extends State<ItemPage> {
     widget.item.images = _images;
 
     if (widget.item.id == null || widget.item.id == 0) {
-      localDbProvider.insert(widget.item);
+      localDbProvider.insertItem(widget.item);
     } else {
-      localDbProvider.update(widget.item);
+      localDbProvider.updateItem(widget.item);
     }
     Navigator.of(context).pop(widget.item);
   }

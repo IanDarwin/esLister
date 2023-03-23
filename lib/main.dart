@@ -5,10 +5,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:eslister/model/item.dart';
 import 'package:eslister/ui/item_list_view.dart';
-import 'data/local_db_provider.dart';
-import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
-import 'settings/settings_service.dart';
+import 'package:eslister/data/local_db_provider.dart';
+import 'package:eslister/settings/settings_controller.dart';
+import 'package:eslister/settings/settings_view.dart';
+import 'package:eslister/settings/settings_service.dart';
 
 late LocalDbProvider localDbProvider;
 late SettingsController settingsController;

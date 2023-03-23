@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:eslister/model/item.dart';
+import 'package:eslister/model/project.dart';
 
-const itemTableName = 'items';
+// Projects
+var tableNameProjects = 'project';
+
+// Items
+const tableNameItems = 'items';
 const columnId = 'id';
 const columnRemoteId = "remoteId";
 const columnName = 'name';
@@ -21,6 +26,8 @@ class LocalDbProvider {
   /// The database when opened.
   late Database _db;
 
+  //////////////////////// DB SETUP/TEARDOWN /////////////////////
+
   /// Open the database.
   Future<void> open(String path) async {
     debugPrint("LocalDbProvider.open($path)");
@@ -34,7 +41,7 @@ class LocalDbProvider {
   Future<void> _onCreate(Database database, int version) async {
     debugPrint("In LocalDbProvider::onCreate; database = $database");
     await database.execute('''
-create table $itemTableName ( 
+create table $tableNameItems ( 
   $columnId integer primary key autoincrement,
   $columnRemoteId text,
   $columnProjectId int,
@@ -45,11 +52,25 @@ create table $itemTableName (
   $columnValue double
   )
 ''');
-    // Insert starter records
-    for (Item item in _demoList) {
+    // Insert starter Items
+    for (Item item in _demoItems) {
       await database.execute('''
-        insert into $itemTableName($columnName,$columnDescr,$columnLocation,$columnValue)
+        insert into $tableNameItems($columnName,$columnDescr,$columnLocation,$columnValue)
         values('${item.name}', '${item.description}', '${item.location}', ${item.value});
+        ''');
+    }
+
+    // Now the Projects table
+    await database.execute('''
+  create table $tableNameProjects (
+    id integer primary key autoincrement,
+    name text,
+    description text
+  }''');
+    for (Project project in _demoProjects) {
+      await database.execute('''
+        insert into $tableNameProjects(name, description)
+        values('${project.name}', '${project.description}');
         ''');
     }
   }
@@ -58,22 +79,33 @@ create table $itemTableName (
     throw(Exception("onUpgrade not needed yet"));
   }
 
-  // Initial starter list
-  final List<Item> _demoList = [
+  //////////////////////// PRE-SEED DATA /////////////////////
+  
+  // Initial starter date
+  final List<Item> _demoItems = [
     Item('Candlestick', [], location: 'Living room', description:"A single silver candlestick (heavy)", value: 1.50),
     Item('Rope', [], location: 'Parlor', description:"A 10-foot long sisal rope", value: 0.25),
     Item('Knife', [], location: 'Kitchen', description:"A long and very sharp knife"),
   ];
+  
+  final List<Project> _demoProjects = [
+    Project(id: 1, name: "Default Project", description: "A Sample Project"),
+    Project(id: 2, name: "Estate Stuff", description: "Another Sample Project"),
+    Project(id: 3, name: "Cheaper Stuff"),
+  ];
 
-  // CRUD operations:
+  /// Close database.
+  Future close() async => _db.close();
+
+  //////////////////////// ITEMS /////////////////////
 
   /// "Create": Insert an entity.
-  Future<Item> insert(Item item) async {
+  Future<Item> insertItem(Item item) async {
     debugPrint("LocalDbProvider::inserting $item");
     var map = item.toMap();
     map.remove("id");
     map['images'] = item.images.toString();
-    int id = await _db.insert(itemTableName, map);
+    int id = await _db.insert(tableNameItems, map);
     item.id = id;
     return item;
   }
@@ -81,7 +113,7 @@ create table $itemTableName (
   /// "Read": Get an entity
   Future<Item?> getItem(int id) async {
     debugPrint("LocalDbProvider getItem($id)");
-    final List<Map> maps = await _db.query(itemTableName,
+    final List<Map> maps = await _db.query(tableNameItems,
         columns: allColumns,
         where: '$columnId = ?',
         whereArgs: [id]);
@@ -94,31 +126,68 @@ create table $itemTableName (
   /// Retrieve all the entity entries in the table.
   Future<List<Item>> getAllItems() async {
     List<Item> result = [];
-    final List<Map> maps = await _db.query(itemTableName,
+    final List<Map> maps = await _db.query(tableNameItems,
         orderBy: 'lower($columnName)');
     for (Map m in maps) {
       result.add(Item.fromMap(m));
     }
-    print('getAllItems created ${result.length} Item objects');
     return result;
   }
 
-  /// "Update" an entity.
-  Future<int?> update(Item item) async {
+  /// Retrieve all the entity entries in one project.
+  Future<List<Item>> getItemsInProject(int project_id) async {
+    List<Item> result = [];
+    final List<Map> maps = await _db.query(tableNameItems,
+        where: 'project_id = ?',
+        whereArgs: [project_id],
+        orderBy: 'lower($columnName)');
+    for (Map m in maps) {
+      result.add(Item.fromMap(m));
+    }
+    return result;
+  }
+
+  /// "Update" an Item.
+  Future<int?> updateItem(Item item) async {
     List<String> images = item.images;
     var map = item.toMap();
-    debugPrint('LocalDBProvider Updating #${item.id} as $map');
-    return await _db.update(itemTableName, map,
+    return await _db.update(tableNameItems, map,
         where: '$columnId = ?', whereArgs: [item.id]);
   }
 
-  /// "Delete" an entity.
+  /// "Delete" an Item.
   Future<int?> delete(int id) async {
-    return await _db.delete(itemTableName, where: '$columnId = ?', whereArgs: [id]);
+    return await _db.delete(tableNameItems, where: '$columnId = ?', whereArgs: [id]);
   }
 
+  //////////////////////// CATEGORIES /////////////////////
   // List<String> get categories => _locations;
 
-  /// Close database.
-  Future close() async => _db.close();
+  //////////////////////// PROJECTS /////////////////////
+  Future<Project> insertProject(project) async {
+    int id = await _db.insert(tableNameProjects, project.toMap());
+    project.id = id;
+    return project;
+  }
+
+  Future<int> updateProject(project) async {
+    return await _db.update(tableNameProjects, project.toMap(),
+        where: 'where id = ?', whereArgs: [project.id]);
+  }
+
+  Future<List<Project>> getAllProjects() async {
+    List<Project> result = [];
+    final List<Map> projectMaps = await _db.query(tableNameProjects,
+        orderBy: 'lower($columnName)');
+    for (Map m in projectMaps) {
+      var project = Project.fromMap(m);
+      // Get the list of items from the items table that belong to this project
+      List<Map> itemsMap = await _db.query(tableNameItems, where: "project_id = ?", whereArgs: [m['project.id']]);
+      for (Map m in itemsMap) {
+        project.addItemId(m['id']);
+      }
+      result.add(project);
+    }
+    return result;
+  }
 }

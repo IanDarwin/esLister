@@ -133,8 +133,9 @@ class ItemListViewState extends State<ItemListView> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => (const ProjectListPage())));
                 },
-                  child: Icon(Icons.edit),
+                  child: const Icon(Icons.edit),
               ),
+              /// XXX Adapt code from "add photo" Row logic here!
               ElevatedButton(
                 onPressed: () {},
                 child: Text("Project 1"),
@@ -142,6 +143,10 @@ class ItemListViewState extends State<ItemListView> {
               ElevatedButton(
                 onPressed: () {},
                 child: Text("Project 2"),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text("Project 3"),
               ),
             ],
           )
