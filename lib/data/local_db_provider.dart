@@ -36,6 +36,9 @@ class LocalDbProvider {
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
+    // Insert any last-minute fixups here
+    // int ret = await _db.rawUpdate('update $tableNameItems set project_id = 1');
+    // print("update returned $ret");
   }
 
   Future<void> _onCreate(Database database, int version) async {
@@ -103,7 +106,7 @@ create table $tableNameItems (
   Future<Item> insertItem(Item item) async {
     debugPrint("LocalDbProvider::inserting $item");
     var map = item.toMap();
-    map.remove("id");
+    map.remove("id"); // Let DB assign on insert
     map['images'] = item.images.toString();
     int id = await _db.insert(tableNameItems, map);
     item.id = id;
@@ -181,8 +184,12 @@ create table $tableNameItems (
         orderBy: 'lower($columnName)');
     for (Map m in projectMaps) {
       var project = Project.fromMap(m);
+      // print("getAllProjects: project $project");
       // Get the list of items from the items table that belong to this project
-      List<Map> itemsMap = await _db.query(tableNameItems, where: "project_id = ?", whereArgs: [m['project.id']]);
+      List<Map> itemsMap = await _db.query(tableNameItems,
+          columns: [columnId],
+          where: "project_id = ?", whereArgs: [project.id]);
+      // print("Found ${itemsMap.length} items for $project");
       for (Map m in itemsMap) {
         project.addItemId(m['id']);
       }

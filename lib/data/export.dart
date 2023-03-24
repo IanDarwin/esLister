@@ -13,24 +13,33 @@ import '../main.dart';
 Future<void> exportToZip() async {
   // Create the ZIP archive
   final archive = Archive();
+  final pathShortenerRegExp = RegExp(".*/");
 
   List<Project> projects = await localDbProvider.getAllProjects();
 
+  // XXX Only do one project, make it a param
+
+  /// The image names get shortened, and the images written
+  /// to, the generated archive, so it can be used on the host computer
   for (Project proj in projects) {
-    print('Project $proj');
+    // print('Project $proj');
     for (int itemId in proj.items) {
-      print('Item $itemId in project ${proj.id}');
+      // print('Item $itemId in project ${proj.id}');
       Item? item = await localDbProvider.getItem(itemId);
+      Item? original = await localDbProvider.getItem(itemId); // item!.clone();
+      for (int i = 0; i < item!.images.length; i++) {
+        item!.images[i] = item!.images[i].replaceFirst(pathShortenerRegExp, "images/");
+      }
       var generatedString = json.encode(item!.toMap());
       archive.addFile(
         ArchiveFile('${item.name}.txt',
             generatedString.length, generatedString.codeUnits),
       );
 
-      for (String imageFileName in item.images) {
-        var shortName = imageFileName.replaceAll(".*/", "");
+      for (String imageFileName in original!.images) {
+        var shortName = imageFileName.replaceAll(pathShortenerRegExp, "images/");
         archive.addFile(
-          ArchiveFile('images/$shortName',
+          ArchiveFile(shortName,
               await File(imageFileName).length(), await File(imageFileName).readAsBytes()),
         );
       }

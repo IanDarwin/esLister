@@ -6,6 +6,11 @@ class Project {
 
   Project({required this.id, required this.name, this.description});
 
+  @override
+  toString() {
+    return 'Project#$id-$name';
+  }
+
   Map toMap() {
     return {
       "id": id,

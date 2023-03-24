@@ -4,6 +4,8 @@ import 'package:eslister/settings/settings_view.dart';
 import 'package:eslister/data/export.dart';
 import 'package:eslister/main.dart' show settingsController;
 
+import 'dialog_demos.dart';
+
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});
 
@@ -41,11 +43,15 @@ class NavDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.cloud),
               title: const Text('Export Project'),
-              onTap: () async  {
+              onTap: () async {
                 // Navigator.push(context, MaterialPageRoute(
                 //     builder: (context) => const ExportProjectsPage()))
                 await exportToZip();
-                print("Export done? Check archive.zip");
+                // if (!mounted) {
+                //   return;
+                // }
+                //alert(context, "Export done(?) adb pull archive.zip");
+                Navigator.of(context).pop();  // close the nav drawer
               },
             ),
             ListTile(
