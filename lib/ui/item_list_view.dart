@@ -154,12 +154,9 @@ class ItemListViewState extends State<ItemListView> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            Navigator.restorablePushNamed<Item>(
-              context,
-              ItemPage.routeName,
-            );
+            await Navigator.of(context).push(MaterialPageRoute(
+                builder: (conext) => ItemPage(item: Item('', [], projectId: 1))));
             setState(() {
-              print("Add Action::setState");
               // empty, but do trigger rebuild
             });
           },
