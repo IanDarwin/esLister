@@ -178,23 +178,36 @@ create table $tableNameItems (
         where: 'where id = ?', whereArgs: [project.id]);
   }
 
+  Future<Project> getProject(int projectId) async {
+    var p = await _db.query(tableNameProjects,
+      where: "id = ?",
+      whereArgs: [projectId]);
+    Project proj = Project.fromMap(p[0]);
+    await _addItemsIntoProject(proj);
+    return proj;
+  }
+
   Future<List<Project>> getAllProjects() async {
     List<Project> result = [];
     final List<Map> projectMaps = await _db.query(tableNameProjects,
         orderBy: 'lower($columnName)');
     for (Map m in projectMaps) {
       var project = Project.fromMap(m);
-      // print("getAllProjects: project $project");
-      // Get the list of items from the items table that belong to this project
-      List<Map> itemsMap = await _db.query(tableNameItems,
-          columns: [columnId],
-          where: "project_id = ?", whereArgs: [project.id]);
+      List<Map<String, dynamic>> itemsMap = await _addItemsIntoProject(project);
       // print("Found ${itemsMap.length} items for $project");
-      for (Map m in itemsMap) {
-        project.addItemId(m['id']);
-      }
       result.add(project);
     }
     return result;
+  }
+
+  /// Add in the list of items from the items table that belong to this project
+  Future<List<Map<String, dynamic>>> _addItemsIntoProject(Project project) async {
+    List<Map<String,dynamic>> itemsMap = await _db.query(tableNameItems,
+        columns: [columnId],
+        where: "project_id = ?", whereArgs: [project.id]);
+    for (Map m in itemsMap) {
+      project.addItemId(m['id']);
+    }
+    return itemsMap;
   }
 }

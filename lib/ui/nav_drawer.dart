@@ -46,7 +46,8 @@ class NavDrawer extends StatelessWidget {
               onTap: () async {
                 // Navigator.push(context, MaterialPageRoute(
                 //     builder: (context) => const ExportProjectsPage()))
-                await exportToZip();
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (conext) => ExportPage()));
                 // if (!mounted) {
                 //   return;
                 // }

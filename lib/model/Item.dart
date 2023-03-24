@@ -40,7 +40,7 @@ class Item {
       location: map["location"],
       description: map['description'],
       value: map['value'],
-      projectId: map['project_id'],
+      projectId: map['project_id'] ?? 1,
     );
   }
 
