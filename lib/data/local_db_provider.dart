@@ -115,7 +115,7 @@ create table $tableNameItems (
 
   /// "Read": Get an entity
   Future<Item?> getItem(int id) async {
-    debugPrint("LocalDbProvider getItem($id)");
+    //debugPrint("LocalDbProvider getItem($id)");
     final List<Map> maps = await _db.query(tableNameItems,
         columns: allColumns,
         where: '$columnId = ?',

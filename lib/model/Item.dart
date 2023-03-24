@@ -23,6 +23,7 @@ class Item {
       "description": description,
       "location": location,
       "value": value,
+      "project_id": projectId,
     };
     if (id != 0) {
       map['id'] = id;
@@ -39,6 +40,7 @@ class Item {
       location: map["location"],
       description: map['description'],
       value: map['value'],
+      projectId: map['project_id'],
     );
   }
 
