@@ -1,3 +1,4 @@
 adb -d pull /sdcard/download/archive.zip
+unzip -t archive
 unzip archive.zip Sofa.txt
 more Sofa.txt
