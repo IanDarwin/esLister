@@ -30,21 +30,20 @@ class ExportPageState extends State<ExportPage> {
     return Scaffold(
       appBar: AppBar(title: Text('Export')),
         body:Center(
+          // Need a Project chooser here
+          // Need a filename textfield here.
           child: ElevatedButton(
             onPressed: () async {
-              // XXX use package to find portable location for this!
-              // final Directory appDocsDir = await getApplicationDocumentsDirectory();
-              final Directory appDocsDir = Directory("/sdcard/download");
+              // find portable location for this!
+              final Directory appDocsDir = await getApplicationDocumentsDirectory();
               var fullPath = "${appDocsDir.path}/archive.zip";
-              await Future.delayed(
-                  const Duration(seconds: 0),
-                  () async => await exportToZip(projectId, fullPath));
+              print('File path $fullPath');
+              await exportToZip(projectId, fullPath);
 
-              // alert(context, "Archive written", title: "Done");
               if (!mounted) {
                 return;
               }
-              Navigator.pop(context);
+              Navigator.pop(context, fullPath);
             },
             child: const Text('Export'),
           ),

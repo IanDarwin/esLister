@@ -6,9 +6,14 @@ import 'package:eslister/main.dart' show settingsController;
 
 import 'dialog_demos.dart';
 
-class NavDrawer extends StatelessWidget {
+class NavDrawer extends StatefulWidget {
   const NavDrawer({super.key});
 
+  @override
+  State<StatefulWidget> createState() => NavDrawerState();
+}
+
+class NavDrawerState extends State<NavDrawer> {
   @override
   build(context) {
     return Drawer(
@@ -44,15 +49,13 @@ class NavDrawer extends StatelessWidget {
               leading: const Icon(Icons.cloud),
               title: const Text('Export Project'),
               onTap: () async {
-                // Navigator.push(context, MaterialPageRoute(
-                //     builder: (context) => const ExportProjectsPage()))
-                await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (conext) => ExportPage()));
-                // if (!mounted) {
-                //   return;
-                // }
-                //alert(context, "Export done(?) adb pull archive.zip");
+                String fullPath = await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ExportPage()));
+                if (!mounted) {
+                  return;
+                }
                 Navigator.of(context).pop();  // close the nav drawer
+                alert(context, "Archive written; use adb pull $fullPath", title: "Export done");
               },
             ),
             ListTile(
