@@ -1,3 +1,4 @@
+import 'package:eslister/main.dart';
 import 'package:flutter/material.dart';
 import 'package:eslister/model/project.dart';
 
@@ -5,21 +6,14 @@ import 'package:eslister/model/project.dart';
 class ProjectEditPage extends StatefulWidget {
   final Project project;
 
-  ProjectEditPage({required this.project});
+  ProjectEditPage({super.key, required this.project});
 
   @override
-  _ProjectEditPageState createState() => _ProjectEditPageState();
+  ProjectEditPageState createState() => ProjectEditPageState();
 }
 
-class _ProjectEditPageState extends State<ProjectEditPage> {
-  List<Project> _editedProjects = [];
-
-  @override
-  void initState() {
-    super.initState();
-    // Create a copy of the list of projects to edit
-    //_editedProjects = List.from(widget.projects);
-  }
+class ProjectEditPageState extends State<ProjectEditPage> {
+  final List<Project> _editedProjects = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +27,19 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
             onPressed: () {
-              // XXX save changes
+              localDbProvider.updateProject(widget.project);
               Navigator.pop(context, _editedProjects);
             },
             child: Text("Save Changes"),
           ),
         ),
 
-        ListTile(
-          title: TextFormField(
+        Column(children: [
+
+          Text('Project Id ${widget.project.id}'),
+          TextFormField(
             initialValue: widget.project.name,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Name",
             ),
             onChanged: (value) {
@@ -51,10 +47,11 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                 widget.project.name = value;
               });
             },
+            onSaved: (value) => widget.project.name = value!,
           ),
-          subtitle: TextFormField(
+          TextFormField(
             initialValue: widget.project.description ?? "",
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Description",
             ),
             onChanged: (value) {
@@ -62,7 +59,9 @@ class _ProjectEditPageState extends State<ProjectEditPage> {
                 widget.project.description = value.isNotEmpty ? value : null;
               });
             },
+            onSaved: (value) => widget.project.description = value!,
           ),
+          ]
         ),
       ],
       ),

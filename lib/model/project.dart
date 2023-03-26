@@ -11,7 +11,7 @@ class Project {
     return 'Project#$id-$name';
   }
 
-  Map toMap() {
+  Map<String, Object?> toMap() {
     return {
       "id": id,
       "name": name,

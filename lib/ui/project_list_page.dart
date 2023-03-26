@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:eslister/main.dart';
 import 'package:eslister/ui/project_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eslister/model/project.dart';
@@ -14,12 +17,7 @@ class ProjectListPageState extends State<ProjectListPage> {
   int _selectedProjectId = -1;
 
   Future<List<Project>> _getProjects() async {
-    // Temporary list of projects
-    return [
-      Project(id: 1, name: "Default Project", description: "A Sample Project"),
-      Project(id: 2, name: "Estate Stuff", description: "Another Sample Project"),
-      Project(id: 3, name: "Cheaper Stuff"),
-    ];
+    return localDbProvider.getAllProjects();
   }
 
   @override
@@ -39,8 +37,8 @@ class ProjectListPageState extends State<ProjectListPage> {
                 return ListTile(
                   title: Text(project.name),
                   subtitle: project.description != null ? Text(project.description!) : null,
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
+                  onTap: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => (ProjectEditPage(project: project))));
                     setState(() {
                       _selectedProjectId = project.id!;

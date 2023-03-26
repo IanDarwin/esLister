@@ -27,13 +27,16 @@ List<Project> _projects = [];
 
 class ItemListViewState extends State<ItemListView> {
   late Offset _pos = Offset.zero;
-  late List<Project> projects;
+  List<Project> projects = [];
+
   @override
   void initState() {
+    print('ItemListViewState.initState');
     loadProjects();
     super.initState();
   }
   void loadProjects() async {
+    print('ItemListViewState.loadProjects');
     projects = await localDbProvider.getAllProjects();
   }
 

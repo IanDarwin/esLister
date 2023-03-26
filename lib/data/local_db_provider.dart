@@ -174,8 +174,9 @@ create table $tableNameItems (
   }
 
   Future<int> updateProject(project) async {
+    print('LocalDbProvider.updateProject $project');
     return await _db.update(tableNameProjects, project.toMap(),
-        where: 'where id = ?', whereArgs: [project.id]);
+        where: 'id = ?', whereArgs: [project.id]);
   }
 
   Future<Project> getProject(int projectId) async {
@@ -190,7 +191,7 @@ create table $tableNameItems (
   Future<List<Project>> getAllProjects() async {
     List<Project> result = [];
     final List<Map> projectMaps = await _db.query(tableNameProjects,
-        orderBy: 'lower($columnName)');
+        orderBy: 'id');
     for (Map m in projectMaps) {
       var project = Project.fromMap(m);
       List<Map<String, dynamic>> itemsMap = await _addItemsIntoProject(project);
