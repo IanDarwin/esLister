@@ -20,15 +20,26 @@ class ItemListView extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => ItemListViewState();
+
 }
 
 List<Project> _projects = [];
 
 class ItemListViewState extends State<ItemListView> {
   late Offset _pos = Offset.zero;
+  late List<Project> projects;
+  @override
+  void initState() {
+    loadProjects();
+    super.initState();
+  }
+  void loadProjects() async {
+    projects = await localDbProvider.getAllProjects();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var all = localDbProvider.getAllItems();
+    var all = localDbProvider.getItemsInProject(1);
     print('ItemListView::build()');
     return Scaffold(
       appBar: AppBar(
@@ -124,32 +135,26 @@ class ItemListViewState extends State<ItemListView> {
         shape: const CircularNotchedRectangle(),
         child: SizedBox(
           height: 50,
-          child:
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 1 + (projects.length),
+              itemBuilder: (context, index) {
+            if (index == 0) {
+              return ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => (const ProjectListPage())));
                 },
                   child: const Icon(Icons.edit),
-              ),
-              /// XXX Adapt code from "add photo" Row logic here!
-              ElevatedButton(
+              );
+            } else {
+              return ElevatedButton(
                 onPressed: () {},
-                child: Text("Project 1"),
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("Project 2"),
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("Project 3"),
-              ),
-            ],
-          )
+                child: Text(projects[index-1].name),
+              );
+            }
+              }
+          ),
         )
       ),
       floatingActionButton: FloatingActionButton(
