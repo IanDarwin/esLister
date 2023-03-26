@@ -12,6 +12,8 @@ import '../model/project.dart';
 
 const noDataMessage = "Nothing catalogued yet. Use + to add.";
 
+int currentProjectId = 1;
+
 /// Displays a list of Items.
 class ItemListView extends StatefulWidget {
   const ItemListView({super.key});
@@ -42,7 +44,7 @@ class ItemListViewState extends State<ItemListView> {
 
   @override
   Widget build(BuildContext context) {
-    var all = localDbProvider.getItemsInProject(1);
+    var all = localDbProvider.getItemsInProject(currentProjectId);
     print('ItemListView::build()');
     return Scaffold(
       appBar: AppBar(
@@ -152,7 +154,9 @@ class ItemListViewState extends State<ItemListView> {
               );
             } else {
               return ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState( () => currentProjectId = projects[index-1]!.id!);
+                },
                 child: Text(projects[index-1].name),
               );
             }
