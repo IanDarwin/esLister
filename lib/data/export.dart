@@ -1,12 +1,10 @@
 /// "Export" some files into a Zip file
 
-import 'package:eslister/ui/dialog_demos.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
 import 'dart:io';
 import 'package:archive/archive.dart';
-
 import 'package:eslister/model/item.dart';
 import 'package:eslister/model/project.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,8 +33,8 @@ class ExportPageState extends State<ExportPage> {
           child: ElevatedButton(
             onPressed: () async {
               // find portable location for this!
-              final Directory appDocsDir = await getApplicationDocumentsDirectory();
-              var fullPath = "${appDocsDir.path}/archive.zip";
+              final Directory? appDocsDir = await getExternalStorageDirectory();
+              var fullPath = "${appDocsDir!.path}/archive.zip";
               print('File path $fullPath');
               await exportToZip(projectId, fullPath);
 
