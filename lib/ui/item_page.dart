@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:eslister/ui/project_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:eslister/model/item.dart';
 import 'package:eslister/main.dart';
 import 'package:eslister/ui/camera_screen.dart';
+
+import '../model/project.dart';
+import 'item_list_view.dart';
 
 /// Displays/Edits detailed information about one Item.
 class ItemPage extends StatefulWidget {
@@ -100,7 +104,7 @@ class ItemPageState extends State<ItemPage> {
                         initialValue: _name,
                         keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
-                          hintText: 'Item Name',
+                            hintText: 'Item Name',
                             labelText: 'Name'),
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -180,6 +184,18 @@ class ItemPageState extends State<ItemPage> {
                           double.parse(value);
                         },
                       ),
+                      DropdownButton<Project>(
+                        items: allProjects.map((project) {
+                          return DropdownMenuItem(
+                              value: project,
+                              child: Text(project.name));
+                        }).toList(),
+                        onChanged: (Project? val) {
+                          setState( () {
+                            currentProjectId = val!.id!;
+                          });
+                        },
+                      ),
                       const SizedBox(height: 16.0),
                       const Text('Images'),
                       const SizedBox(height: 8.0),
@@ -193,47 +209,47 @@ class ItemPageState extends State<ItemPage> {
                               itemBuilder: (context, index) {
                                 if (index == _images.length) { // e.g., last one
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: SizedBox(
-                                      height: 100,
-                                      child: Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () async {
-                                            String path = await Navigator.of(context).push(MaterialPageRoute(
-                                                builder: (context) => (TakePictureScreen())));
-                                            setState(() {
-                                              _images.add(path);
-                                            });
-                                          },
-                                          child: Container(
-                                            width: 100.0,
-                                            height: 48.0,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: Colors.grey),
-                                              borderRadius: BorderRadius.circular(4.0),
-                                            ),
-                                            child: const Icon(Icons.camera),
-                                          ),
-                                        ),
-                                        SizedBox(height:4),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            _addImage();
-                                          },
-                                          child: Container(
-                                            width: 100.0,
-                                            height: 48.0,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: Colors.grey),
-                                              borderRadius: BorderRadius.circular(4.0),
-                                            ),
-                                            child: const Icon(Icons.image_search),
-                                          ),
-                                        ),
-                                    ],
-                                    )
-                                  )
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: SizedBox(
+                                          height: 100,
+                                          child: Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  String path = await Navigator.of(context).push(MaterialPageRoute(
+                                                      builder: (context) => (TakePictureScreen())));
+                                                  setState(() {
+                                                    _images.add(path);
+                                                  });
+                                                },
+                                                child: Container(
+                                                  width: 100.0,
+                                                  height: 48.0,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(color: Colors.grey),
+                                                    borderRadius: BorderRadius.circular(4.0),
+                                                  ),
+                                                  child: const Icon(Icons.camera),
+                                                ),
+                                              ),
+                                              SizedBox(height:4),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  _addImage();
+                                                },
+                                                child: Container(
+                                                  width: 100.0,
+                                                  height: 48.0,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(color: Colors.grey),
+                                                    borderRadius: BorderRadius.circular(4.0),
+                                                  ),
+                                                  child: const Icon(Icons.image_search),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                      )
                                   );
                                 }
                                 return Padding(
@@ -274,17 +290,17 @@ class ItemPageState extends State<ItemPage> {
                           )
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => _cancelForm(),
-                            child: Text("Cancel"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _saveForm(),
-                            child: Text("Save"),
-                          ),
-                        ]
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              onPressed: (() => _cancelForm),
+                              child: Text("Cancel"),
+                            ),
+                            ElevatedButton(
+                              onPressed: () => _saveForm(),
+                              child: Text("Save"),
+                            ),
+                          ]
                       ),
                     ]
                 )

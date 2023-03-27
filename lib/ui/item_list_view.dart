@@ -67,7 +67,7 @@ class ItemListViewState extends State<ItemListView> {
               builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                 if (snapshot.hasData) {
                   if ((snapshot.data as List<Item>).isEmpty) {
-                    return const Center(child: Text(noDataMessage));
+                    return Column(children: const [Center(child: Text(noDataMessage))]);
                   }
                   return Column(children: snapshot.data!.map((item) =>
                       GestureDetector(
@@ -167,7 +167,7 @@ class ItemListViewState extends State<ItemListView> {
       floatingActionButton: FloatingActionButton(
           onPressed: () async {
             await Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ItemPage(item: Item('', [], projectId: 1))));
+                builder: (context) => ItemPage(item: Item('', [], projectId: currentProjectId))));
             if (!mounted) {
               return;
             }

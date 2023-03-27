@@ -13,10 +13,20 @@ class ProjectListPage extends StatefulWidget {
   ProjectListPageState createState() => ProjectListPageState();
 }
 
+late List<Project> allProjects;
+
 class ProjectListPageState extends State<ProjectListPage> {
   int _selectedProjectId = -1;
 
-  Future<List<Project>> _getProjects() async {
+  initState() {
+    _loadProjects();
+  }
+
+  _loadProjects() async {
+    allProjects = await localDbProvider.getAllProjects();
+  }
+
+  _getProjects() {
     return localDbProvider.getAllProjects();
   }
 
