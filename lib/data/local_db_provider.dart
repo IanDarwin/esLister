@@ -159,7 +159,7 @@ create table $tableNameItems (
   }
 
   /// "Delete" an Item.
-  Future<int?> delete(int id) async {
+  Future<int?> deleteItem(int id) async {
     return await _db.delete(tableNameItems, where: '$columnId = ?', whereArgs: [id]);
   }
 

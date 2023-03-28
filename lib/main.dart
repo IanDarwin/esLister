@@ -1,8 +1,11 @@
 import 'package:camera/camera.dart';
-import 'package:eslister/ui/item_page.dart';
+import 'package:eslister/provider/item_provider.dart';
+import 'package:eslister/provider/project_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
+import 'package:eslister/ui/item_page.dart';
 import 'package:eslister/model/item.dart';
 import 'package:eslister/ui/item_list_view.dart';
 import 'package:eslister/data/local_db_provider.dart';
@@ -36,10 +39,17 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
-  runApp(MyApp(settingsController: settingsController));
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ProjectProvider>(create: (_) => ProjectProvider()),
+          ChangeNotifierProvider<ItemProvider>(create: (_) => ItemProvider()),
+        ],
+      child: MyApp(settingsController: settingsController))
+  );
 }
 
-/// The Widget that configures your application.
+/// The "home" Widget of the application.
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,

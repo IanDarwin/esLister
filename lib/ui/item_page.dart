@@ -7,8 +7,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:eslister/model/item.dart';
 import 'package:eslister/main.dart';
 import 'package:eslister/ui/camera_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../model/project.dart';
+import '../provider/project_provider.dart';
 import 'item_list_view.dart';
 
 /// Displays/Edits detailed information about one Item.
@@ -90,6 +92,7 @@ class ItemPageState extends State<ItemPage> {
 
   @override
   Widget build(BuildContext context) {
+    var projects = context.watch<ProjectProvider>().projects;
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.item.name.isEmpty ? 'Add Item' : 'Edit Item'),
@@ -168,7 +171,7 @@ class ItemPageState extends State<ItemPage> {
                         decoration: const InputDecoration(
                             hintText: 'Item\' worth (local currency)',
                             labelText: 'Value'),
-                        keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return null;      // field is optional
@@ -185,7 +188,7 @@ class ItemPageState extends State<ItemPage> {
                         },
                       ),
                       DropdownButton<Project>(
-                        items: allProjects.map((project) {
+                        items: projects.map((project) {
                           return DropdownMenuItem(
                               value: project,
                               child: Text(project.name));
