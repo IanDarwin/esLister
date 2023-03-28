@@ -12,8 +12,6 @@ import '../provider/project_provider.dart';
 
 const noDataMessage = "Nothing catalogued yet. Use + to add.";
 
-int currentProjectId = 1;
-
 /// Displays a list of Items.
 class ItemListView extends StatefulWidget {
   const ItemListView({super.key});
@@ -55,10 +53,10 @@ class ItemListViewState extends State<ItemListView> {
                 Item item = provider.items[index];
                 return ListTile(
                   title: Text(item.name),
-                  subtitle: Text(item.description!),
+                  subtitle: Text(shortForm(item.description!, 65)),
                   leading: const Icon(Icons.table_bar),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => provider.deleteItem(item.id!),
                   ),
                   onTap: () => _edit(context, item),
@@ -90,7 +88,8 @@ class ItemListViewState extends State<ItemListView> {
                     print("ARGHHH. Project ${projects[index-1]} is NULL");
                     return;
                   }
-                  setState( () => currentProjectId = projects[index-1].id!);
+                  setState( () => Provider.of<ItemProvider>(context,
+                      listen: false).currentProjectId = projects[index-1].id!);
                 },
                 child: Text(projects[index-1].name),
               );
@@ -102,7 +101,9 @@ class ItemListViewState extends State<ItemListView> {
       floatingActionButton: FloatingActionButton(
           onPressed: () async {
             await Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ItemPage(item: Item('', [], projectId: currentProjectId))));
+                builder: (context) => ItemPage(item: Item('', [],
+                    projectId: Provider.of<ItemProvider>(context, listen: false)
+                        .currentProjectId))));
             if (!mounted) {
               return;
             }
@@ -147,5 +148,12 @@ class ItemListViewState extends State<ItemListView> {
 
   alert(context, message, {title = 'Alert'}) {
     print(message);
+  }
+
+  String shortForm(String s, int len) {
+    int l = s.length;
+    return s.length <= len ?
+        s :
+        '${s.substring(0, len - 3)}...';
   }
 }

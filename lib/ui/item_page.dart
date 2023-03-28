@@ -10,6 +10,7 @@ import 'package:eslister/ui/camera_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../model/project.dart';
+import '../provider/item_provider.dart';
 import '../provider/project_provider.dart';
 import 'item_list_view.dart';
 
@@ -195,7 +196,8 @@ class ItemPageState extends State<ItemPage> {
                         }).toList(),
                         onChanged: (Project? val) {
                           setState( () {
-                            currentProjectId = val!.id!;
+                            Provider.of<ItemProvider>(context, listen: false)
+                                .currentProjectId = val!.id!;
                           });
                         },
                       ),

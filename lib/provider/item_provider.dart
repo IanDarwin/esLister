@@ -15,9 +15,11 @@ class ItemProvider extends ChangeNotifier {
 		await _loadItems();
 	}
 
+	int currentProjectId = 1;
+
 	int getItemCount() {
 		int i = 0;
-		localDbProvider.getItemsInProject(1).then(
+		localDbProvider.getItemsInProject(currentProjectId).then(
 				(list) {
 					i = list.length;
 				}
@@ -40,8 +42,9 @@ class ItemProvider extends ChangeNotifier {
 	}
 
 	/// Read (no notify)
-	List<Item> getItemsInProject(int projectId) {
-		var iter = _items.where((itm) => itm.projectId == projectId);
+	List<Item> getItemsInProject({targetProject = 0}) {
+		int pid = (targetProject == 0) ? currentProjectId : targetProject;
+		var iter = _items.where((itm) => itm.projectId ==  pid);
 		return iter.toList();
 	}
 
