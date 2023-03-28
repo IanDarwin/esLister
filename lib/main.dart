@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-import 'package:eslister/ui/item_page.dart';
+import 'package:eslister/ui/item_edit_page.dart';
 import 'package:eslister/model/item.dart';
 import 'package:eslister/ui/item_list_view.dart';
 import 'package:eslister/data/local_db_provider.dart';

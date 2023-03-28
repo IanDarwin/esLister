@@ -1,7 +1,7 @@
 import 'package:eslister/model/item.dart';
 import 'package:eslister/provider/item_provider.dart';
 import 'package:eslister/settings/settings_view.dart';
-import 'package:eslister/ui/item_page.dart';
+import 'package:eslister/ui/item_edit_page.dart';
 import 'package:eslister/ui/nav_drawer.dart';
 import 'package:eslister/ui/project_list_page.dart';
 import 'package:flutter/material.dart';
