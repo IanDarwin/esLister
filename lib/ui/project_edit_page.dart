@@ -1,6 +1,9 @@
 import 'package:eslister/main.dart';
 import 'package:flutter/material.dart';
 import 'package:eslister/model/project.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/project_provider.dart';
 
 /// Edit a project
 class ProjectEditPage extends StatefulWidget {
@@ -17,9 +20,10 @@ class ProjectEditPageState extends State<ProjectEditPage> {
 
   @override
   Widget build(BuildContext context) {
+	var provider = context.watch<ProjectProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Projects"),
+        title: const Text("Edit Projects"),
       ),
       body: Column(children: [
         // Add a button to save changes
@@ -27,7 +31,7 @@ class ProjectEditPageState extends State<ProjectEditPage> {
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
             onPressed: () {
-              localDbProvider.updateProject(widget.project);
+              provider.updateProject(widget.project);
               Navigator.pop(context, _editedProjects);
             },
             child: Text("Save Changes"),

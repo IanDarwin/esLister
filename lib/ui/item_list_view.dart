@@ -1,4 +1,3 @@
-import 'package:eslister/main.dart' show localDbProvider;
 import 'package:eslister/model/item.dart';
 import 'package:eslister/provider/item_provider.dart';
 import 'package:eslister/settings/settings_view.dart';
@@ -126,17 +125,6 @@ class ItemListViewState extends State<ItemListView> {
               builder: (context) => ItemPage(item: item))));
     if (!mounted) {
       print("Not mounted.");
-      return;
-    }
-    setState(() {});
-  }
-
-  _delete(context, item) async {
-    debugPrint("Delete $item");
-    await Future.delayed(
-        const Duration(seconds: 0),
-            () async => await localDbProvider.deleteItem(item.id));
-    if (!mounted) {
       return;
     }
     setState(() {});

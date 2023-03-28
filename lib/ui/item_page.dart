@@ -1,18 +1,14 @@
 import 'dart:io';
 
-import 'package:eslister/ui/project_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'package:eslister/model/item.dart';
-import 'package:eslister/main.dart';
-import 'package:eslister/ui/camera_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../model/project.dart';
-import '../provider/item_provider.dart';
-import '../provider/project_provider.dart';
-import 'item_list_view.dart';
+import 'package:eslister/model/item.dart';
+import 'package:eslister/model/project.dart';
+import 'package:eslister/provider/item_provider.dart';
+import 'package:eslister/provider/project_provider.dart';
+import 'package:eslister/ui/camera_screen.dart';
 
 /// Displays/Edits detailed information about one Item.
 class ItemPage extends StatefulWidget {
@@ -50,7 +46,7 @@ class ItemPageState extends State<ItemPage> {
     _images = widget.item.images;
   }
 
-  void _saveForm() {
+  void _saveForm(context) {
     bool isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
@@ -64,10 +60,11 @@ class ItemPageState extends State<ItemPage> {
     widget.item.value = _value;
     widget.item.images = _images;
 
+	var provider = Provider.of<ItemProvider>(context, listen: false);
     if (widget.item.id == null || widget.item.id == 0) {
-      localDbProvider.insertItem(widget.item);
+      provider.insertItem(widget.item);
     } else {
-      localDbProvider.updateItem(widget.item);
+      provider.updateItem(widget.item);
     }
     Navigator.of(context).pop(widget.item);
   }
@@ -302,7 +299,7 @@ class ItemPageState extends State<ItemPage> {
                               child: Text("Cancel"),
                             ),
                             ElevatedButton(
-                              onPressed: () => _saveForm(),
+                              onPressed: () => _saveForm(context),
                               child: Text("Save"),
                             ),
                           ]

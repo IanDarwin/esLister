@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 
-import 'package:eslister/main.dart';
+import 'package:eslister/main.dart' show localDbProvider;
 import 'package:eslister/model/project.dart';
 
 class ProjectProvider extends ChangeNotifier {
