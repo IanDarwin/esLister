@@ -1,13 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:eslister/model/item.dart';
 import 'package:eslister/provider/item_provider.dart';
+import 'package:eslister/provider/project_provider.dart';
 import 'package:eslister/settings/settings_view.dart';
 import 'package:eslister/ui/item_edit_page.dart';
 import 'package:eslister/ui/nav_drawer.dart';
 import 'package:eslister/ui/project_list_page.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../provider/project_provider.dart';
 
 const noDataMessage = "Nothing catalogued yet. Use + to add.";
 
@@ -25,8 +25,9 @@ class ItemListViewState extends State<ItemListView> {
   @override
   Widget build(BuildContext context) {
     var projects = context.watch<ProjectProvider>().projects;
-    var list = context.watch<ItemProvider>().items;
-    print('ItemListView::build()');
+    int pid = Provider.of<ItemProvider>(context).currentProjectId;
+    var list = context.watch<ItemProvider>().getItemsInProject(targetProject: pid);
+    print('ItemListView::build(): pid = $pid');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog Items'),
@@ -47,9 +48,9 @@ class ItemListViewState extends State<ItemListView> {
           Consumer<ItemProvider>(
             builder: (context, provider, child) {
             return ListView.builder(
-          itemCount: provider.items.length, 
+              itemCount: list.length,
               itemBuilder: (context, index) {
-                Item item = provider.items[index];
+                Item item = list[index];
                 return ListTile(
                   title: Text(item.name),
                   subtitle: Text(shortForm(item.description!, 65)),
@@ -89,7 +90,8 @@ class ItemListViewState extends State<ItemListView> {
                   }
                   setState( () => Provider.of<ItemProvider>(context,
                       listen: false).currentProjectId = projects[index-1].id!);
-                },
+                  print('ItemListViewState.build.BottomNav: provider.currentProjectID set to ${projects[index-1].id}');
+                  },
                 child: Text(projects[index-1].name),
               );
             }
@@ -139,7 +141,6 @@ class ItemListViewState extends State<ItemListView> {
   }
 
   String shortForm(String s, int len) {
-    int l = s.length;
     return s.length <= len ?
         s :
         '${s.substring(0, len - 3)}...';

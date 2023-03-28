@@ -43,7 +43,9 @@ class ItemProvider extends ChangeNotifier {
 	/// Read (no notify)
 	List<Item> getItemsInProject({targetProject = 0}) {
 		int pid = (targetProject == 0) ? currentProjectId : targetProject;
-		var iter = _items.where((itm) => itm.projectId ==  pid);
+		print('ItemProvider.getItemsInProject: currPid = $pid');
+    var iter = _items.where((itm) => itm.projectId ==  pid);
+		print(iter);
 		return iter.toList();
 	}
 

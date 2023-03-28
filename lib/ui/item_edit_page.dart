@@ -51,6 +51,8 @@ class ItemPageState extends State<ItemPage> {
     if (!isValid) {
       return;
     }
+	  var itemProvider = Provider.of<ItemProvider>(context, listen: false);
+
     _formKey.currentState!.save();
 
     // Copy updated fields into entity, leaving "id" unchanged
@@ -59,12 +61,12 @@ class ItemPageState extends State<ItemPage> {
     widget.item.location = _location;
     widget.item.value = _value;
     widget.item.images = _images;
+    widget.item.projectId = itemProvider.currentProjectId;
 
-	var provider = Provider.of<ItemProvider>(context, listen: false);
     if (widget.item.id == null || widget.item.id == 0) {
-      provider.insertItem(widget.item);
+      itemProvider.insertItem(widget.item);
     } else {
-      provider.updateItem(widget.item);
+      itemProvider.updateItem(widget.item);
     }
     Navigator.of(context).pop(widget.item);
   }
@@ -91,6 +93,7 @@ class ItemPageState extends State<ItemPage> {
   @override
   Widget build(BuildContext context) {
     var projects = context.watch<ProjectProvider>().projects;
+    var itemProv = Provider.of<ItemProvider>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.item.name.isEmpty ? 'Add Item' : 'Edit Item'),
@@ -193,8 +196,7 @@ class ItemPageState extends State<ItemPage> {
                         }).toList(),
                         onChanged: (Project? val) {
                           setState( () {
-                            Provider.of<ItemProvider>(context, listen: false)
-                                .currentProjectId = val!.id!;
+                            itemProv.currentProjectId = val!.id!;
                           });
                         },
                       ),
