@@ -1,5 +1,6 @@
 /// "Export" some files into a Zip file
 
+import 'package:eslister/provider/item_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
@@ -8,6 +9,7 @@ import 'package:archive/archive.dart';
 import 'package:eslister/model/item.dart';
 import 'package:eslister/model/project.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -23,7 +25,7 @@ class ExportPageState extends State<ExportPage> {
   @override
   Widget build(BuildContext context) {
     int projectId;
-    projectId = 1; // XXX Have a chooser!
+    projectId = Provider.of<ItemProvider>(context).currentProjectId; // XXX Have a chooser!
 
     return Scaffold(
       appBar: AppBar(title: Text('Export')),

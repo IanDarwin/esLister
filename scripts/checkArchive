@@ -1,4 +1,4 @@
-adb -d pull /sdcard/download/archive.zip
+adb -d pull /storage/emulated/0/Android/data/com.darwinsys.eslister/files/archive.zip
 unzip -t archive
 unzip archive.zip Sofa.txt
 more Sofa.txt
