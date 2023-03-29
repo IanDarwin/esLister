@@ -188,17 +188,22 @@ class ItemPageState extends State<ItemPage> {
                           double.parse(value);
                         },
                       ),
-                      DropdownButton<Project>(
-                        items: projects.map((project) {
-                          return DropdownMenuItem(
-                              value: project,
-                              child: Text(project.name));
-                        }).toList(),
-                        onChanged: (Project? val) {
-                          setState( () {
-                            itemProv.currentProjectId = val!.id!;
-                          });
-                        },
+                      Row(
+                        children: [
+                          const Text('Project'),
+                          DropdownButton<Project>(
+                          items: projects.map((project) {
+                            return DropdownMenuItem(
+                                value: project,
+                                child: Text(project.name));
+                          }).toList(),
+                          onChanged: (Project? val) {
+                            setState( () {
+                              itemProv.currentProjectId = val!.id!;
+                            });
+                          },
+                        ),
+                        ]
                       ),
                       const SizedBox(height: 16.0),
                       const Text('Images'),

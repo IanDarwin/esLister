@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:eslister/provider/item_provider.dart';
 import 'package:eslister/provider/project_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:eslister/ui/item_edit_page.dart';
@@ -16,6 +19,7 @@ import 'package:eslister/settings/settings_service.dart';
 late LocalDbProvider localDbProvider;
 late SettingsController settingsController;
 late List cameras;
+late Directory appDocsDir;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +39,9 @@ void main() async {
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
+
+  // Load the application storage directory
+  appDocsDir = (await getExternalStorageDirectory())!;
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the

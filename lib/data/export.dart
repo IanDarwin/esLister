@@ -1,6 +1,7 @@
 /// "Export" some files into a Zip file
 
 import 'package:eslister/provider/item_provider.dart';
+import 'package:eslister/provider/project_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
@@ -8,10 +9,9 @@ import 'dart:io';
 import 'package:archive/archive.dart';
 import 'package:eslister/model/item.dart';
 import 'package:eslister/model/project.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
+import 'package:eslister/main.dart' show appDocsDir, localDbProvider;
 
 class ExportPage extends StatefulWidget {
 
@@ -24,28 +24,75 @@ class ExportPage extends StatefulWidget {
 class ExportPageState extends State<ExportPage> {
   @override
   Widget build(BuildContext context) {
-    int projectId;
-    projectId = Provider.of<ItemProvider>(context).currentProjectId; // XXX Have a chooser!
+    int currentProjectId = Provider.of<ItemProvider>(context).currentProjectId;
+    var projects = context.watch<ProjectProvider>().projects;
+    String format = 'JSON';
 
     return Scaffold(
-      appBar: AppBar(title: Text('Export')),
-        body:Center(
-          // Need a Project chooser here
-          // Need a filename textfield here.
-          child: ElevatedButton(
-            onPressed: () async {
-              // find portable location for this!
-              final Directory? appDocsDir = await getExternalStorageDirectory();
-              var fullPath = "${appDocsDir!.path}/archive.zip";
-              print('File path $fullPath');
-              await exportToZip(projectId, fullPath);
+      appBar: AppBar(title: const Text('Export')),
+        body:Center(// Need a filename textfield here.
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Text("Project: "),
+                  DropdownButton<int>(
+                  value: currentProjectId,
+                    items: projects.map((project) {
+                      return DropdownMenuItem(
+                          value: project.id,
+                          child: Text(project.name));
+                    }).toList(),
+                    onChanged: (int? val)  {
+                      setState(() {
+                        Provider.of<ItemProvider>(context, listen: false).currentProjectId = currentProjectId = val!;
+                      });
+                    }),
+                ]
+              ),
 
-              if (!mounted) {
-                return;
-              }
-              Navigator.pop(context, fullPath);
-            },
-            child: const Text('Export'),
+              Text("Directory is $appDocsDir"),
+
+              Row(
+                children: [
+                  const Text("Format (FOR NOW, ONLY JSON): "),
+                  const Text("JSON"),
+                  Radio<String>(
+                    groupValue: format,
+                    value: 'JSON',
+                    onChanged: (val){
+                      setState(() {
+                        format = val!;
+                      });
+                    },
+                  ),
+                  const Text("HTML"),
+                  Radio<String>(
+                    groupValue: format,
+                    value: 'HTML',
+                    onChanged: (val){
+                      setState(() {
+                        format = val!;
+                      });
+                    },
+                  ),
+                ]
+              ),
+
+              ElevatedButton(
+                onPressed: () async {
+                  var fullPath = "${appDocsDir.path}/archive.zip";
+                  print('File path $fullPath');
+                  await exportToZip(currentProjectId, fullPath);
+
+                  if (!mounted) {
+                    return;
+                  }
+                  Navigator.pop(context, fullPath);
+                },
+                child: const Text('Export'),
+              ),
+            ],
           ),
         )
     );
