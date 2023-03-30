@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:eslister/main.dart';
 import 'package:eslister/provider/project_provider.dart';
 import 'package:eslister/ui/project_edit_page.dart';
 import 'package:flutter/material.dart';
@@ -42,19 +39,27 @@ class ProjectListPageState extends State<ProjectListPage> {
                     });
                   },
                   selected: project.id == _selectedProjectId,
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => _deleteItem(project),
+                  ),
                 );
               },
             ),
       floatingActionButton: _selectedProjectId >= 0
           ? FloatingActionButton(
               onPressed: () {
-                // Replace this with your own code to handle the selected project
                 print("Selected project with id $_selectedProjectId");
               },
-              child: Icon(Icons.check),
+              child: const Icon(Icons.check),
             )
           : null,
     );
+  }
+
+  _deleteItem(Project project) {
+    var provider = Provider.of<ProjectProvider>(context, listen: false);
+    provider.deleteProject(project.id!);
   }
 }
 
