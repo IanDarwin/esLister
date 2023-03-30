@@ -71,7 +71,7 @@ class ItemPageState extends State<ItemPage> {
     Navigator.of(context).pop(widget.item);
   }
 
-  void _cancelForm() {
+  void _cancelForm(BuildContext context) {
     Navigator.of(context).pop();
   }
 
@@ -302,12 +302,12 @@ class ItemPageState extends State<ItemPage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                              onPressed: (() => _cancelForm),
-                              child: Text("Cancel"),
+                              onPressed: (() => _cancelForm(context)),
+                              child: const Text("Cancel"),
                             ),
                             ElevatedButton(
                               onPressed: () => _saveForm(context),
-                              child: Text("Save"),
+                              child: const Text("Save"),
                             ),
                           ]
                       ),

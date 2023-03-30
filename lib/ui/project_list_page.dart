@@ -46,14 +46,6 @@ class ProjectListPageState extends State<ProjectListPage> {
                 );
               },
             ),
-      floatingActionButton: _selectedProjectId >= 0
-          ? FloatingActionButton(
-              onPressed: () {
-                print("Selected project with id $_selectedProjectId");
-              },
-              child: const Icon(Icons.check),
-            )
-          : null,
     );
   }
 
