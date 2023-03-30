@@ -43,10 +43,10 @@ class ItemListViewState extends State<ItemListView> {
       ),
       drawer: const NavDrawer(),
       body:
-        list.isEmpty ?
-          const Center(child: Text(noDataMessage)) :
-          Consumer<ItemProvider>(
-            builder: (context, provider, child) {
+      list.isEmpty ?
+      const Center(child: Text(noDataMessage)) :
+      Consumer<ItemProvider>(
+          builder: (context, provider, child) {
             return ListView.builder(
               itemCount: list.length,
               itemBuilder: (context, index) {
@@ -56,48 +56,74 @@ class ItemListViewState extends State<ItemListView> {
                   subtitle: Text(shortForm(item.description!, 65)),
                   leading: const Icon(Icons.table_bar),
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => provider.deleteItem(item.id!),
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog<void>(
+                            context: context,
+                            barrierDismissible: true,
+                            // must tap a button to dismiss
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  title: Text("Really Delete ${item.name}?"),
+                                  content: Text(
+                                      "Are you sure you want to permanently delete ${item
+                                          .name}"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text("Cancel"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        provider.deleteItem(item!);
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Really delete"),
+                                    ),
+                                  ]
+                              );
+                            });
+                      }
                   ),
-                  onTap: () => _edit(context, item),
                 );
-              });
               },
-            ),
+            );
+          }
+      ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
-        shape: const CircularNotchedRectangle(),
-        child: SizedBox(
-          height: 50,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 1 + (projects.length),
-              itemBuilder: (context, index) {
-            if (index == 0) {
-              return ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => (const ProjectListPage())));
-                },
-                  child: const Icon(Icons.edit),
-              );
-            } else {
-              return ElevatedButton(
-                onPressed: () {
-                  if (projects[index-1].id == null) {
-                    print("ARGHHH. Project ${projects[index-1]} is NULL");
-                    return;
+          color: Colors.lightBlueAccent,
+          shape: const CircularNotchedRectangle(),
+          child: SizedBox(
+            height: 50,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 1 + (projects.length),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => (const ProjectListPage())));
+                      },
+                      child: const Icon(Icons.edit),
+                    );
+                  } else {
+                    return ElevatedButton(
+                      onPressed: () {
+                        if (projects[index-1].id == null) {
+                          print("ARGHHH. Project ${projects[index-1]} is NULL");
+                          return;
+                        }
+                        setState( () => Provider.of<ItemProvider>(context,
+                            listen: false).currentProjectId = projects[index-1].id!);
+                        print('ItemListViewState.build.BottomNav: provider.currentProjectID set to ${projects[index-1].id}');
+                      },
+                      child: Text(projects[index-1].name),
+                    );
                   }
-                  setState( () => Provider.of<ItemProvider>(context,
-                      listen: false).currentProjectId = projects[index-1].id!);
-                  print('ItemListViewState.build.BottomNav: provider.currentProjectID set to ${projects[index-1].id}');
-                  },
-                child: Text(projects[index-1].name),
-              );
-            }
-              }
-          ),
-        )
+                }
+            ),
+          )
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -124,7 +150,7 @@ class ItemListViewState extends State<ItemListView> {
     await Future.delayed(
         const Duration(seconds: 0),
             () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ItemPage(item: item))));
+            builder: (context) => ItemPage(item: item))));
     if (!mounted) {
       print("Not mounted.");
       return;
@@ -142,7 +168,7 @@ class ItemListViewState extends State<ItemListView> {
 
   String shortForm(String s, int len) {
     return s.length <= len ?
-        s :
-        '${s.substring(0, len - 3)}...';
+    s :
+    '${s.substring(0, len - 3)}...';
   }
 }

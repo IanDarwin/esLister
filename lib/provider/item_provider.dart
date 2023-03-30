@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:eslister/main.dart' show localDbProvider;
@@ -54,16 +56,22 @@ class ItemProvider extends ChangeNotifier {
 
 	/// Update, and notify
 	Future<void> updateItem(Item item) async {
-		var rc = await localDbProvider.updateItem(item);
+		await localDbProvider.updateItem(item);
 		final index = _items.indexWhere((i) => i.id == item.id);
 		_items[index] = item;
 		notifyListeners();
 	}
 
-	/// Delete, and notify
-	Future<void> deleteItem(int id) async {
-		 await localDbProvider.deleteItem(id);
-		_items.removeWhere((i) => i.id == id);
+	/// Delete an Item and its images, and notify listeners
+	Future<void> deleteItem(Item item) async {
+		for (String s in item.images) {
+			var file = File(s);
+			if (file.existsSync()) {
+				await file.delete();
+			}
+		}
+		 await localDbProvider.deleteItem(item.id!);
+		_items.removeWhere((i) => i.id == item.id!);
 		notifyListeners();
 	}
 
