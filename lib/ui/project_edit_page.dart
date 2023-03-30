@@ -43,6 +43,8 @@ class ProjectEditPageState extends State<ProjectEditPage> {
           Text('Project Id ${widget.project.id}'),
           TextFormField(
             initialValue: widget.project.name,
+            keyboardType: TextInputType.name,
+            textCapitalization: TextCapitalization.words,
             decoration: const InputDecoration(
               labelText: "Name",
             ),
@@ -55,6 +57,8 @@ class ProjectEditPageState extends State<ProjectEditPage> {
           ),
           TextFormField(
             initialValue: widget.project.description ?? "",
+            keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.sentences,
             decoration: const InputDecoration(
               labelText: "Description",
             ),

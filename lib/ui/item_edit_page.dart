@@ -107,6 +107,7 @@ class ItemPageState extends State<ItemPage> {
                       TextFormField(
                         initialValue: _name,
                         keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
                         decoration: const InputDecoration(
                             hintText: 'Item Name',
                             labelText: 'Name'),
@@ -123,6 +124,7 @@ class ItemPageState extends State<ItemPage> {
                       TextFormField(
                         initialValue: _description,
                         keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: const InputDecoration(
                             hintText: "About the article",
                             labelText: 'Description'),
@@ -147,6 +149,7 @@ class ItemPageState extends State<ItemPage> {
                           return TextFormField(
                             controller: editingController,
                             keyboardType: TextInputType.name,
+                            textCapitalization: TextCapitalization.words,
                             decoration: const InputDecoration(
                                 hintText: 'What room it\'s in',
                                 labelText: 'Location'),
