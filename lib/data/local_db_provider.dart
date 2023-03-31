@@ -201,6 +201,10 @@ create table $tableNameItems (
     return result;
   }
 
+  Future<void> deleteProject(Project project) async {
+    await _db.delete(tableNameProjects, where: 'id=?', whereArgs: [project.id]);
+  }
+
   /// Add in the list of items from the items table that belong to this project
   Future<List<Map<String, dynamic>>> _addItemsIntoProject(Project project) async {
     List<Map<String,dynamic>> itemsMap = await _db.query(tableNameItems,

@@ -10,6 +10,8 @@ import 'package:eslister/provider/item_provider.dart';
 import 'package:eslister/provider/project_provider.dart';
 import 'package:eslister/ui/camera_screen.dart';
 
+import 'dialog_utils.dart';
+
 /// Displays/Edits detailed information about one Item.
 class ItemPage extends StatefulWidget {
   final Item item;
@@ -88,6 +90,10 @@ class ItemPageState extends State<ItemPage> {
     setState(() {
       _images.removeAt(index);
     });
+  }
+
+  _viewPhoto(var image) {
+    alertWidgetChild(context, Image.file(File(image)), title: "Image View");
   }
 
   @override
@@ -244,7 +250,7 @@ class ItemPageState extends State<ItemPage> {
                                                   child: const Icon(Icons.camera),
                                                 ),
                                               ),
-                                              SizedBox(height:4),
+                                              const SizedBox(height:4),
                                               GestureDetector(
                                                 onTap: () async {
                                                   _addImage();
@@ -264,6 +270,7 @@ class ItemPageState extends State<ItemPage> {
                                       )
                                   );
                                 }
+                                // Regular Images
                                 return Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Stack(
@@ -274,9 +281,12 @@ class ItemPageState extends State<ItemPage> {
                                               border: Border.all(color: Colors.grey),
                                               borderRadius: BorderRadius.circular(4.0),
                                             ),
-                                            child: Image.file(
-                                              File(_images[index]),
-                                              fit: BoxFit.cover,
+                                            child: GestureDetector(
+                                              onTap: () => _viewPhoto(_images[index]),
+                                              child: Image.file(
+                                                File(_images[index]),
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                           Positioned(

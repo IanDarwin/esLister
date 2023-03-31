@@ -48,12 +48,14 @@ class ProjectProvider extends ChangeNotifier {
 
 	/// Delete, and notify
 	Future<void> deleteProject(project) async {
-		for (Item item in project.items) {
-			await localDbProvider.deleteItem(item.id!);
+		// Delete all items associated with the project
+		for (var itemId in project.items) {
+			await localDbProvider.deleteItem(itemId);
 		}
-		int id = project.id!;
-		await localDbProvider.deleteItem(id);
-		_projects.removeWhere((i) => i.id == id);
+		// Delete the project itself, first from the DB...
+		await localDbProvider.deleteProject(project);
+		// ... and then from the current list.
+		_projects.removeWhere((i) => i.id == project.id!);
 		notifyListeners();
 	}
 

@@ -55,6 +55,7 @@ class ItemListViewState extends State<ItemListView> {
                   title: Text(item.name),
                   subtitle: Text(shortForm(item.description!, 65)),
                   leading: const Icon(Icons.table_bar),
+                  onTap: () async => _edit(context, item),
                   trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () {
@@ -66,8 +67,8 @@ class ItemListViewState extends State<ItemListView> {
                               return AlertDialog(
                                   title: Text("Really Delete ${item.name}?"),
                                   content: Text(
-                                      "Are you sure you want to permanently delete ${item
-                                          .name}"),
+                                      "Are you sure you want to permanently "
+                                          "delete ${item.name}"),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(context),
@@ -75,7 +76,7 @@ class ItemListViewState extends State<ItemListView> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        provider.deleteItem(item!);
+                                        provider.deleteItem(item);
                                         Navigator.pop(context);
                                       },
                                       child: const Text("Really delete"),
@@ -145,7 +146,7 @@ class ItemListViewState extends State<ItemListView> {
 
   // The PopupMenuItem.onTap does its own Navigator.pop,
   // so we use Future.delayed() to "delay" around the pop.
-  _edit(context, item) async {
+  Future<void> _edit(context, item) async {
     print("Edit $item");
     await Future.delayed(
         const Duration(seconds: 0),

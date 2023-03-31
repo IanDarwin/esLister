@@ -4,7 +4,7 @@ import 'package:eslister/settings/settings_view.dart';
 import 'package:eslister/data/export.dart';
 import 'package:eslister/main.dart' show settingsController;
 
-import 'dialog_demos.dart';
+import 'dialog_utils.dart';
 
 class NavDrawer extends StatefulWidget {
   const NavDrawer({super.key});
