@@ -106,10 +106,11 @@ Future<void> exportToZip(int projectId, String fullPath) async {
   Project proj = await localDbProvider.getProject(projectId);
 
   /// The image names get shortened, and the images written
-  /// to "image" in, the generated archive, so the archive can
+  /// to "image" in the generated archive, so the archive can
   /// easily be used on the host computer.
 
   final archive = Archive();
+  final files = [];
 
   for (int itemId in proj.items) {
     // print('Item $itemId in project ${proj.id}');
@@ -119,6 +120,7 @@ Future<void> exportToZip(int projectId, String fullPath) async {
       item.images[i] = item.images[i].replaceFirst(pathShortenerRegExp, "images/");
     }
     var generatedString = json.encode(item.toMap());
+    files.add(item.name);
     archive.addFile(
       ArchiveFile('${item.name}.txt',
           generatedString.length, generatedString.codeUnits),
@@ -132,6 +134,14 @@ Future<void> exportToZip(int projectId, String fullPath) async {
       );
     }
   }
+  files.sort();
+  StringBuffer index = StringBuffer("<html><title>{proj.title}</title><h1>{proj.title></h1><ol>\n");
+  for (String f in files) {
+    index.write('<li><a href=""{f}.txt">{f}</a></li>\n');
+  }
+  index.write('</ol></html>\n');
+  print(index);
+  archive.addFile(ArchiveFile("index.html", index.length, index));
 
   // Save the ZIP archive to a file
   final zipFile = File(fullPath);
