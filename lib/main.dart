@@ -25,7 +25,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Set up local database
-  //WidgetsFlutterBinding.ensureInitialized();
   localDbProvider = LocalDbProvider();
   await localDbProvider.open('listings.db');
 
