@@ -135,9 +135,9 @@ Future<void> exportToZip(int projectId, String fullPath) async {
     }
   }
   files.sort();
-  StringBuffer index = StringBuffer("<html><title>{proj.title}</title><h1>{proj.title></h1><ol>\n");
+  StringBuffer index = StringBuffer("<html><title>${proj.name}</title><h1>${proj.name}></h1><ol>\n");
   for (String f in files) {
-    index.write('<li><a href=""{f}.txt">{f}</a></li>\n');
+    index.write('<li><a href="$f.txt">$f</a></li>\n');
   }
   index.write('</ol></html>\n');
   print(index);
