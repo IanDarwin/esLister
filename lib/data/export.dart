@@ -3,6 +3,7 @@
 import 'package:eslister/provider/item_provider.dart';
 import 'package:eslister/provider/project_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import 'dart:convert';
 import 'dart:io';
@@ -55,7 +56,7 @@ class ExportPageState extends State<ExportPage> {
 
               Row(
                 children: [
-                  const Text("Format (FOR NOW, ONLY JSON): "),
+                  const Text("Format (FOR NOW, ONLY HTML): "),
                   const Text("JSON"),
                   Radio<String>(
                     groupValue: format,
@@ -84,6 +85,23 @@ class ExportPageState extends State<ExportPage> {
                   var fullPath = "${appDocsDir.path}/archive.zip";
                   print('File path $fullPath');
                   await exportToZip(currentProjectId, fullPath);
+
+		  bool email = true;
+		  if (email) {
+		    final Email email = Email(
+		      body: "Here is your esLister archive"!,
+		      subject: "esLister archive",
+		      // XXX No recipient
+		      attachmentPaths: [ fullPath ],
+		      isHTML: false,
+		    );
+		    var lastError = "";
+		    try {
+		      await FlutterEmailSender.send(email);
+		    } catch (exception) {
+		      print("Mail sending failed: " + exception.toString());
+		    }
+		}
 
                   if (!mounted) {
                     return;
