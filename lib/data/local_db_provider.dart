@@ -55,11 +55,13 @@ create table $tableNameItems (
   $columnValue double
   )
 ''');
+
     // Insert starter Items
     for (Item item in _demoItems) {
       await database.execute('''
-        insert into $tableNameItems($columnName,$columnDescr,$columnLocation,$columnValue)
-        values('${item.name}', '${item.description}', '${item.location}', ${item.value});
+        insert into $tableNameItems(
+          $columnName, $columnProjectId, $columnDescr,$columnLocation,$columnValue)
+        values('${item.name}', ${item.projectId},'${item.description}', '${item.location}', ${item.value});
         ''');
     }
 
@@ -84,11 +86,11 @@ create table $tableNameItems (
 
   //////////////////////// PRE-SEED DATA /////////////////////
   
-  // Initial starter date
+  // Initial starter data
   final List<Item> _demoItems = [
     Item('Candlestick', [], projectId: 1, location: 'Living room', description:"A single silver candlestick (heavy)", value: 1.50),
     Item('Rope', [], projectId: 1, location: 'Parlor', description:"A 10-foot long sisal rope", value: 0.25),
-    Item('Knife', [], projectId: 1, location: 'Kitchen', description:"A long and very sharp knife"),
+    Item('Knife', [], projectId: 1, location: 'Kitchen', description:"A long and very sharp knife", value: 0),
   ];
   
   final List<Project> _demoProjects = [
@@ -152,7 +154,6 @@ create table $tableNameItems (
 
   /// "Update" an Item.
   Future<int?> updateItem(Item item) async {
-    List<String> images = item.images;
     var map = item.toMap();
     return await _db.update(tableNameItems, map,
         where: '$columnId = ?', whereArgs: [item.id]);
@@ -195,7 +196,7 @@ create table $tableNameItems (
     for (Map m in projectMaps) {
       var project = Project.fromMap(m);
       List<Map<String, dynamic>> itemsMap = await _addItemsIntoProject(project);
-      // print("Found ${itemsMap.length} items for $project");
+      print("Found ${itemsMap.length} items for $project");
       result.add(project);
     }
     return result;
