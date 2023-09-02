@@ -40,7 +40,9 @@ void main() async {
   await settingsController.loadSettings();
 
   // Load the application storage directory
-  appDocsDir = (await getExternalStorageDirectory())!;
+  appDocsDir = Platform.isAndroid ?
+    (await getDownloadsDirectory())! :
+    (await getApplicationDocumentsDirectory())!;
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the

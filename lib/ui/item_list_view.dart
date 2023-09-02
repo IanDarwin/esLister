@@ -25,9 +25,9 @@ class ItemListViewState extends State<ItemListView> {
   @override
   Widget build(BuildContext context) {
     var projects = context.watch<ProjectProvider>().projects;
-    int pid = Provider.of<ItemProvider>(context).currentProjectId;
-    var list = context.watch<ItemProvider>().getItemsInProject(targetProject: pid);
-    print('ItemListView::build(): pid = $pid');
+    int projId = Provider.of<ItemProvider>(context).currentProjectId;
+    var list = context.watch<ItemProvider>().getItemsInProject(targetProject: projId);
+    print('ItemListView::build(): projId = $projId');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog Items'),
