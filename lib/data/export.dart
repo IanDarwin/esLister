@@ -30,78 +30,77 @@ class ExportPageState extends State<ExportPage> {
     String format = 'JSON';
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Export')),
+        appBar: AppBar(title: const Text('Export')),
         body:Center(// Need a filename textfield here.
           child: Column(
             children: [
               Row(
-                children: [
-                  const Text("Project: "),
-                  DropdownButton<int>(
-                  value: currentProjectId,
-                    items: projects.map((project) {
-                      return DropdownMenuItem(
-                          value: project.id,
-                          child: Text(project.name));
-                    }).toList(),
-                    onChanged: (int? val)  {
-                      setState(() {
-                        Provider.of<ItemProvider>(context, listen: false).currentProjectId = currentProjectId = val!;
-                      });
-                    }),
-                ]
+                  children: [
+                    const Text("Project: "),
+                    DropdownButton<int>(
+                        value: currentProjectId,
+                        items: projects.map((project) {
+                          return DropdownMenuItem(
+                              value: project.id,
+                              child: Text(project.name));
+                        }).toList(),
+                        onChanged: (int? val)  {
+                          setState(() {
+                            Provider.of<ItemProvider>(context, listen: false).currentProjectId = currentProjectId = val!;
+                          });
+                        }),
+                  ]
               ),
 
               Text("Directory is $appDocsDir"),
 
               Row(
-                children: [
-                  const Text("Format (FOR NOW, ONLY HTML): "),
-                  const Text("JSON"),
-                  Radio<String>(
-                    groupValue: format,
-                    value: 'JSON',
-                    onChanged: (val){
-                      setState(() {
-                        format = val!;
-                      });
-                    },
-                  ),
-                  const Text("HTML"),
-                  Radio<String>(
-                    groupValue: format,
-                    value: 'HTML',
-                    onChanged: (val){
-                      setState(() {
-                        format = val!;
-                      });
-                    },
-                  ),
-                ]
+                  children: [
+                    const Text("Format (FOR NOW, ONLY HTML): "),
+                    const Text("JSON"),
+                    Radio<String>(
+                      groupValue: format,
+                      value: 'JSON',
+                      onChanged: (val){
+                        setState(() {
+                          format = val!;
+                        });
+                      },
+                    ),
+                    const Text("HTML"),
+                    Radio<String>(
+                      groupValue: format,
+                      value: 'HTML',
+                      onChanged: (val){
+                        setState(() {
+                          format = val!;
+                        });
+                      },
+                    ),
+                  ]
               ),
 
               ElevatedButton(
                 onPressed: () async {
                   var fullPath = "${appDocsDir.path}/archive.zip";
-                  print('File path $fullPath');
                   await exportToZip(currentProjectId, fullPath);
 
-		  bool email = true;
-		  if (email) {
-		    final Email email = Email(
-		      body: "Here is your esLister archive"!,
-		      subject: "esLister archive",
-		      // XXX No recipient
-		      attachmentPaths: [ fullPath ],
-		      isHTML: false,
-		    );
-		    var lastError = "";
-		    try {
-		      await FlutterEmailSender.send(email);
-		    } catch (exception) {
-		      print("Mail sending failed: " + exception.toString());
-		    }
-		}
+                  bool email = true;
+                  if (email) {
+                    final Email email = Email(
+                      body: "Here is your esLister archive"!,
+                      subject: "esLister archive",
+                      // XXX No recipient
+                      attachmentPaths: [ fullPath ],
+                      isHTML: false,
+                    );
+                    var lastError = "";
+                    try {
+                      await FlutterEmailSender.send(email);
+                    } catch (exception) {
+                      print("Mail sending failed: " + exception.toString());
+                    }
+                  }
 
                   if (!mounted) {
                     return;
@@ -131,7 +130,7 @@ Future<void> exportToZip(int projectId, String fullPath) async {
   final files = [];
 
   for (int itemId in proj.items) {
-    // print('Item $itemId in project ${proj.id}');
+    print('Item $itemId in project ${proj.id}');
     Item? item = await localDbProvider.getItem(itemId);
     Item? original = await localDbProvider.getItem(itemId); // item!.clone();
     for (int i = 0; i < item!.images.length; i++) {
@@ -158,13 +157,12 @@ Future<void> exportToZip(int projectId, String fullPath) async {
     index.write('<li><a href="$f.txt">$f</a></li>\n');
   }
   index.write('</ol></html>\n');
-  print(index);
-  archive.addFile(ArchiveFile("index.html", index.length, index));
+  archive.addFile(ArchiveFile("index.html", index.length, index.toString()));
 
   // Save the ZIP archive to a file
+  var encoded = ZipEncoder().encode(archive);
   final zipFile = File(fullPath);
-  zipFile.writeAsBytesSync(ZipEncoder().encode(archive)!);
-
+  zipFile.writeAsBytesSync(encoded!);
 
 }
 
