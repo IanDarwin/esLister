@@ -1,7 +1,7 @@
 
 /// Describe one item in the location being assessed
 class Item {
-  int? id = 0;
+  int id = 0;
   String name;
   int projectId;
   List<String> images = [];
@@ -9,11 +9,12 @@ class Item {
   String? location;
   double? value;
 
-  Item(this.name, this.images, {this.id, this.projectId = 1, this.description, this.location, this.value});
+  Item(this.name, this.images, {this.id = 0, this.projectId = 1,
+    this.description, this.location, this.value = 0});
 
   @override
   toString() {
-    return "Item #$id Named $name";
+    return "Item #$id: $name";
   }
 
   Map<String,dynamic> toMap() {
@@ -59,10 +60,11 @@ class Item {
     if (input.isEmpty || "[]" == input) {
       return [];
     }
-    List<String> broken = input.split(',');
-    for (int i = 0; i < broken.length; i++) {
-      broken[i] = broken[i].trim();
+    List<String> splitted = input.split(',');
+    // "splitted"" must now be a valid List<String> with no nulls
+    for (int i = 0; i < splitted.length; i++) {
+      splitted[i] = splitted[i].trim();
     }
-    return broken;
+    return splitted;
   }
 }
