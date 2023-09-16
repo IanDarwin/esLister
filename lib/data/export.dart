@@ -27,7 +27,7 @@ class ExportPageState extends State<ExportPage> {
   Widget build(BuildContext context) {
     int currentProjectId = Provider.of<ItemProvider>(context).currentProjectId;
     var projects = context.watch<ProjectProvider>().projects;
-    String format = 'JSON';
+    String format = "?No format?";
 
     return Scaffold(
         appBar: AppBar(title: const Text('Export')),
@@ -53,18 +53,18 @@ class ExportPageState extends State<ExportPage> {
               ),
 
               Text("Directory is $appDocsDir"),
-
+              const Text("Format (FOR NOW, ONLY HTML): "),
               Row(
                   children: [
-                    const Text("Format (FOR NOW, ONLY HTML): "),
                     const Text("JSON"),
                     Radio<String>(
                       groupValue: format,
                       value: 'JSON',
                       onChanged: (val){
-                        setState(() {
+                        print("Igli was here: val=${val}");
+                        //setState(() {
                           format = val!;
-                        });
+                       //});
                       },
                     ),
                     const Text("HTML"),
@@ -72,9 +72,10 @@ class ExportPageState extends State<ExportPage> {
                       groupValue: format,
                       value: 'HTML',
                       onChanged: (val){
-                        setState(() {
+                        print("Igli was here!");
+                        //setState(() {
                           format = val!;
-                        });
+                        //});
                       },
                     ),
                   ]
@@ -82,9 +83,12 @@ class ExportPageState extends State<ExportPage> {
 
               ElevatedButton(
                 onPressed: () async {
-                  var fullPath = "${appDocsDir.path}/archive.zip";
-                  await exportToZip(currentProjectId, fullPath);
 
+                  // Create the archive
+                  var fullPath = "${appDocsDir.path}/archive.zip";
+                  await exportToZip(currentProjectId, fullPath, format);
+
+                  // Try emailing it.
                   bool email = true;
                   if (email) {
                     final Email email = Email(
@@ -118,8 +122,8 @@ class ExportPageState extends State<ExportPage> {
 
 final pathShortenerRegExp = RegExp(".*/");
 
-Future<void> exportToZip(int projectId, String fullPath) async {
-  print("Exporting project #$projectId to $fullPath");
+Future<void> exportToZip(int projectId, String fullPath, String format) async {
+  print("Exporting project #$projectId as $format to $fullPath");
   Project proj = await localDbProvider.getProject(projectId);
 
   /// The image names get shortened, and the images written
@@ -136,10 +140,35 @@ Future<void> exportToZip(int projectId, String fullPath) async {
     for (int i = 0; i < item!.images.length; i++) {
       item.images[i] = item.images[i].replaceFirst(pathShortenerRegExp, "images/");
     }
-    var generatedString = json.encode(item.toMap());
+    String generatedString;
+    String fileExt;
+    switch(format) {
+      case 'HTML':
+        generatedString = '''<html>
+        <title>${item.name}</title>
+        <h3>${item.name}</h3>
+        <p>${item.description}</p>
+        <p>Location: ${item.location}</p>
+        <ul>
+        ''';
+        for (String imageFileName in original!.images) {
+          var shortName = imageFileName.replaceAll(
+              pathShortenerRegExp, "images/");
+          generatedString += "<img src='$shortName' width=128px height=128px>";
+        }
+        generatedString += '</ul></html>';
+        fileExt = ".html";
+        break;
+      case 'JSON':
+        generatedString = json.encode(item.toMap());
+        fileExt = ".json";
+        break;
+      default:
+        throw Exception("Unknown type $format in Export code!!");
+    }
     files.add(item.name);
     archive.addFile(
-      ArchiveFile('${item.name}.txt',
+      ArchiveFile('${item.name}$fileExt',
           generatedString.length, generatedString.codeUnits),
     );
 
@@ -151,13 +180,17 @@ Future<void> exportToZip(int projectId, String fullPath) async {
       );
     }
   }
-  files.sort();
-  StringBuffer index = StringBuffer("<html><title>${proj.name}</title><h1>${proj.name}></h1><ol>\n");
-  for (String f in files) {
-    index.write('<li><a href="$f.txt">$f</a></li>\n');
+
+  if (format == "HTML") {
+    files.sort();
+    StringBuffer index = StringBuffer(
+        "<html><title>${proj.name}</title><h1>${proj.name}></h1><ul>\n");
+    for (String f in files) {
+      index.write('<li><a href="$f.html">$f</a></li>\n');
+    }
+    index.write('</ul></html>\n');
+    archive.addFile(ArchiveFile("index.html", index.length, index.toString()));
   }
-  index.write('</ol></html>\n');
-  archive.addFile(ArchiveFile("index.html", index.length, index.toString()));
 
   // Save the ZIP archive to a file
   var encoded = ZipEncoder().encode(archive);
