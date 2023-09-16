@@ -6,7 +6,6 @@ import 'dart:typed_data';
 import 'package:eslister/provider/item_provider.dart';
 import 'package:eslister/provider/project_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import 'dart:io';
 import 'package:archive/archive.dart';
@@ -15,6 +14,8 @@ import 'package:eslister/model/project.dart';
 import 'package:provider/provider.dart';
 
 import 'package:eslister/main.dart' show appDocsDir, localDbProvider;
+
+const imageDir = "/data/user/0/com.darwinsys.eslister/cache";
 
 class ImportPage extends StatefulWidget {
   final String fullPath;
@@ -60,6 +61,7 @@ class ImportPageState extends State<ImportPage> {
   final outdir = "/sdcard/Downloads/";
 
   void doImport(String fullPath, String format) {
+    Directory("$imageDir/images").createSync(recursive: true);
     print("Doing import from $fullPath as $format");
     File file = File(fullPath);
     Uint8List bytes = file.readAsBytesSync();
@@ -73,16 +75,25 @@ class ImportPageState extends State<ImportPage> {
           final dataString = String.fromCharCodes(data);
           Map<String, dynamic> itemMap = jsonDecode(dataString);
           final item = Item.fromMap(itemMap);
+          final images = item.images;
+          for (int i = 0; i <  images.length; i++) {
+            images[i] = "$imageDir/${images[i]}";
+            print("Image $i set to ${images[i]}");
+          }
           print('File contains $item');
           Provider.of<ItemProvider>(context, listen:false).insertItem(item);
         } else if (filename.endsWith("html")) {
           // For JSON, do nothing with index.html
+        } else if (filename.endsWith(".jpg")) {
+          var imagePath = '$imageDir/$filename';
+          print("Image belongs in $imagePath");
+          File(imagePath).writeAsBytesSync(file.content as List<int>);
         } else {
-          print("Binary file $filename");
+          // else it's a directory, which we ignore
+          // we never generated symlinks so they /*CANTHAPPEN*/
+          print("UNKNOWN file $filename");
         }
       }
-      // else it'a directory, which we ignore
-      // we never write symlinks so they /*CANTHAPPEN*/
     }
   }
 }
