@@ -90,7 +90,7 @@ class ExportPageState extends State<ExportPage> {
                     final Email email = Email(
                       body: "Here is your esLister archive"!,
                       subject: "esLister archive",
-                      // XXX No recipient
+                      // XXX No recipient, user can enter in email app
                       attachmentPaths: [ fullPath ],
                       isHTML: false,
                     );

@@ -4,6 +4,7 @@ import 'package:eslister/settings/settings_view.dart';
 import 'package:eslister/data/export.dart';
 import 'package:eslister/main.dart' show settingsController;
 
+import '../data/import.dart';
 import 'dialog_utils.dart';
 
 class NavDrawer extends StatefulWidget {
@@ -50,12 +51,27 @@ class NavDrawerState extends State<NavDrawer> {
               title: const Text('Export Project'),
               onTap: () async {
                 String fullPath = await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ExportPage()));
+                    builder: (context) => const ExportPage()));
                 if (!mounted) {
                   return;
                 }
                 Navigator.of(context).pop();  // close the nav drawer
                 alert(context, "Archive written; use adb pull $fullPath", title: "Export done");
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.cloud),
+              title: const Text('Re-Import Project'),
+              onTap: () async {
+                String fullPath = "/storage/emulated/0/Android/data/com.darwinsys.eslister/files/downloads/archive.zip";
+                String format = "JSON"; // XXX copy chooser from export
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ImportPage(fullPath: fullPath, format: format)));
+                if (!mounted) {
+                  return;
+                }
+                Navigator.of(context).pop();  // close the nav drawer
+                alert(context, "Archive imported; check project", title: "Import done");
               },
             ),
             ListTile(
