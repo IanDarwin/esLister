@@ -61,7 +61,7 @@ class ExportPageState extends State<ExportPage> {
                       groupValue: format,
                       value: 'JSON',
                       onChanged: (val){
-                        print("Igli was here: val=${val}");
+                        print("Igli was here: val=$val");
                         //setState(() {
                           format = val!;
                        //});
@@ -92,17 +92,16 @@ class ExportPageState extends State<ExportPage> {
                   bool email = true;
                   if (email) {
                     final Email email = Email(
-                      body: "Here is your esLister archive"!,
+                      body: "Here is your esLister archive",
                       subject: "esLister archive",
                       // XXX No recipient, user can enter in email app
                       attachmentPaths: [ fullPath ],
                       isHTML: false,
                     );
-                    var lastError = "";
                     try {
                       await FlutterEmailSender.send(email);
                     } catch (exception) {
-                      print("Mail sending failed: " + exception.toString());
+                      print("Mail sending failed: $exception");
                     }
                   }
 
